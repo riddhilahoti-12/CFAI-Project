@@ -27,10 +27,10 @@ document.addEventListener('DOMContentLoaded', () => {
             if (data.status === 'success') {
                 displaySearchResults(data.results);
             } else {
-                alert('Error: ' + data.message);
+                showError('Error: ' + data.message);
             }
         } catch (error) {
-            alert('Failed to connect to backend server.');
+            showError('Failed to connect to backend server.');
         } finally {
             submitBtn.innerText = originalText;
             submitBtn.disabled = false;
@@ -86,10 +86,10 @@ document.addEventListener('DOMContentLoaded', () => {
             if (data.status === 'success') {
                 displaySubsetResults(data.results);
             } else {
-                alert('Error: ' + data.message);
+                showError('Error: ' + data.message);
             }
         } catch (error) {
-            alert('Failed to connect to backend server.');
+            showError('Failed to connect to backend server.');
         } finally {
             submitBtn.innerText = originalText;
             submitBtn.disabled = false;
@@ -115,6 +115,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 <p class="text-secondary">Is Subset: ${results.subset_set.is_subset}</p>
             </div>
         `;
+    }
+
+    // Error Handling UI
+    function showError(message) {
+        const toast = document.getElementById('error-toast');
+        const msgSpan = document.getElementById('error-message');
+        msgSpan.innerText = message;
+        toast.style.display = 'block';
+        setTimeout(() => { toast.style.display = 'none'; }, 5000);
     }
 
     // Dataset Generators
