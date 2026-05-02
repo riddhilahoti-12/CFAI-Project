@@ -116,4 +116,19 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
         `;
     }
+
+    // Dataset Generators
+    document.getElementById('search-generate-btn').addEventListener('click', () => {
+        const largeArray = Array.from({length: 10000}, () => Math.floor(Math.random() * 100000));
+        largeArray.sort((a, b) => a - b); // Sorting for binary search
+        document.getElementById('array-input').value = largeArray.join(', ');
+        document.getElementById('target-input').value = largeArray[Math.floor(Math.random() * largeArray.length)];
+    });
+
+    document.getElementById('subset-generate-btn').addEventListener('click', () => {
+        const largeArray = Array.from({length: 10000}, () => Math.floor(Math.random() * 50000));
+        const smallArray = Array.from({length: 500}, () => largeArray[Math.floor(Math.random() * largeArray.length)]);
+        document.getElementById('collection-b-input').value = largeArray.join(', ');
+        document.getElementById('collection-a-input').value = smallArray.join(', ');
+    });
 });
