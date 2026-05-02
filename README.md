@@ -1,39 +1,37 @@
 <div align="center">
-  <h1>Algorithm Benchmark & Complexity Visualization System</h1>
-  <p>A web-based tool to visualize and compare the execution time and time complexity of different algorithms.</p>
+  <h1>Algorithm Time Complexity Comparator</h1>
+  <p>A web-based interactive tool to visualize and compare the execution time and time complexity of fundamental algorithms and data structures.</p>
 </div>
 
 ---
 
 ## 🚀 Overview
 
-This project provides an interactive interface for students and developers to compare various data structures and algorithms. By using Python's `time` module in the backend, we accurately measure execution times across different input sizes and display the results dynamically on a beautifully crafted frontend.
+This project provides an interactive frontend interface for students and developers to compare the performance of different search algorithms and subset checking approaches. By leveraging Python's `time` module in the backend, we accurately measure execution times across different input scenarios and dynamically display the results.
 
 ## 🛠️ Tech Stack
 
-- **Frontend:** HTML5, CSS3 (Glassmorphism & Custom Animations), Vanilla JavaScript
-- **Backend:** Python 3, Flask framework
-- **Data Transport:** RESTful API (JSON)
+- **Frontend:** HTML, CSS, JavaScript
+- **Backend:** Python + Flask
 
 ## 👥 Team
 
 Built collaboratively by:
 - **Riddhi**
-- **Mpunika**
+- **Mounika**
 
 ## 📈 Project Progress
 
-- **Day 1:** Initial setup, project structure, and Flask server initialization.
-- **Day 2:** Implemented global CSS design system, typography, and backend algorithm skeletons.
-- **Day 3:** *(In Progress)* Implementing Linear and Binary Search with visualization.
-- **Day 4:** Expanding algorithm suite (Quick, Selection, Insertion, Jump Search) and adding detailed measurement controls.
-- **Day 5+:** Subset checking comparisons, sorting algorithm benchmarks, and UI/UX polishing.
+- **Day 1:** Initial setup, project structure, and Flask server initialization. *(Completed)*
+- **Day 2:** Implemented global CSS design system, typography, and backend algorithm skeletons. *(Completed)*
+- **Day 3:** Implemented Linear and Binary Search logic, created API endpoints, and built the interactive frontend UI. *(Completed)*
+- **Day 4+:** Implement Subset Checking Problem (Lists vs Sets), generate dynamic large datasets, and add comprehensive error handling.
 
 ## 🔮 Future Work
 
-- Space complexity analysis.
-- Export results to CSV.
-- User authentication for saving benchmarks.
+- Expanding the algorithm suite to include Sorting Algorithms.
+- Implementing graphical charts to visualize O(N) vs O(log N) curves.
+- Deploying the web application to a live server.
 
 ## 💻 Getting Started
 
@@ -59,7 +57,7 @@ Built collaboratively by:
 
 3. Install the dependencies:
    ```bash
-   pip install -r requirements.txt
+   pip install Flask
    ```
 
 4. Run the application:
