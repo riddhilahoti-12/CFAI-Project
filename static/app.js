@@ -58,6 +58,62 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
     }
 
+    // Sorting Logic
+    const sortForm = document.getElementById('sort-form');
+    const sortResults = document.getElementById('sort-results');
+
+    sortForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const arrayInput = document.getElementById('sort-array-input').value;
+        
+        // Show loading state
+        const submitBtn = sortForm.querySelector('button[type="submit"]');
+        const originalText = submitBtn.innerText;
+        submitBtn.innerText = 'Calculating...';
+        submitBtn.disabled = true;
+
+        try {
+            const response = await fetch('/api/sort', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ array: arrayInput })
+            });
+
+            const data = await response.json();
+            
+            if (data.status === 'success') {
+                displaySortResults(data.results);
+            } else {
+                showError('Error: ' + data.message);
+            }
+        } catch (error) {
+            showError('Failed to connect to backend server.');
+        } finally {
+            submitBtn.innerText = originalText;
+            submitBtn.disabled = false;
+        }
+    });
+
+    function displaySortResults(results) {
+        sortResults.style.display = 'grid';
+        sortResults.style.gridTemplateColumns = '1fr 1fr';
+        sortResults.style.gap = '1rem';
+        
+        sortResults.innerHTML = `
+            <div style="background: rgba(0,0,0,0.2); padding: 1.5rem; border-radius: 8px;">
+                <h3 style="color: var(--accent-blue);">Bubble Sort</h3>
+                <p style="font-size: 1.5rem; margin: 0.5rem 0;">${results.bubble_sort.time_ms.toFixed(4)} ms</p>
+                <p class="text-secondary">Complexity: ${results.bubble_sort.complexity}</p>
+            </div>
+            <div style="background: rgba(0,0,0,0.2); padding: 1.5rem; border-radius: 8px;">
+                <h3 style="color: var(--accent-purple);">Merge Sort</h3>
+                <p style="font-size: 1.5rem; margin: 0.5rem 0;">${results.merge_sort.time_ms.toFixed(4)} ms</p>
+                <p class="text-secondary">Complexity: ${results.merge_sort.complexity}</p>
+            </div>
+        `;
+    }
+
     // Subset Checking Logic
     const subsetForm = document.getElementById('subset-form');
     const subsetResults = document.getElementById('subset-results');
@@ -127,6 +183,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Dataset Generators
+    document.getElementById('sort-generate-btn').addEventListener('click', () => {
+        const largeArray = Array.from({length: 2000}, () => Math.floor(Math.random() * 10000));
+        document.getElementById('sort-array-input').value = largeArray.join(', ');
+    });
+
     document.getElementById('search-generate-btn').addEventListener('click', () => {
         const largeArray = Array.from({length: 10000}, () => Math.floor(Math.random() * 100000));
         largeArray.sort((a, b) => a - b); // Sorting for binary search
