@@ -58,8 +58,19 @@ def binary_search(arr, target):
 # --- Subset Algorithms (Skeletons) ---
 @time_it
 def is_subset_list(collection_a, collection_b):
-    pass
+    """
+    Checks if collection_a is a subset of collection_b using List logic O(N * M).
+    """
+    for item in collection_a:
+        if item not in collection_b:
+            return False
+    return True
 
 @time_it
 def is_subset_set(collection_a, collection_b):
-    pass
+    """
+    Checks if collection_a is a subset of collection_b using Set logic O(N + M).
+    """
+    set_a = set(collection_a)
+    set_b = set(collection_b)
+    return set_a.issubset(set_b)
