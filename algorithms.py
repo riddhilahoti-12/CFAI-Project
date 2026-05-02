@@ -75,49 +75,4 @@ def is_subset_set(collection_a, collection_b):
     set_b = set(collection_b)
     return set_a.issubset(set_b)
 
-# --- Sorting Algorithms ---
-@time_it
-def bubble_sort(arr):
-    """
-    Sorts a list using Bubble Sort O(N^2).
-    """
-    n = len(arr)
-    for i in range(n):
-        for j in range(0, n-i-1):
-            if arr[j] > arr[j+1]:
-                arr[j], arr[j+1] = arr[j+1], arr[j]
-    return arr
-
-@time_it
-def merge_sort(arr):
-    """
-    Sorts a list using Merge Sort O(N log N).
-    """
-    def _merge_sort(a):
-        if len(a) > 1:
-            mid = len(a) // 2
-            L = a[:mid]
-            R = a[mid:]
-            _merge_sort(L)
-            _merge_sort(R)
-            i = j = k = 0
-            while i < len(L) and j < len(R):
-                if L[i] < R[j]:
-                    a[k] = L[i]
-                    i += 1
-                else:
-                    a[k] = R[j]
-                    j += 1
-                k += 1
-            while i < len(L):
-                a[k] = L[i]
-                i += 1
-                k += 1
-            while j < len(R):
-                a[k] = R[j]
-                j += 1
-                k += 1
-        return a
-    
-    return _merge_sort(arr.copy())
 
