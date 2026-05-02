@@ -29,7 +29,14 @@ def validate_number_list(input_string):
 # --- Search Algorithms (Skeletons) ---
 @time_it
 def linear_search(arr, target):
-    pass
+    """
+    Performs a linear search on a list.
+    Returns the index if found, else -1.
+    """
+    for i in range(len(arr)):
+        if arr[i] == target:
+            return i
+    return -1
 
 @time_it
 def binary_search(arr, target):
