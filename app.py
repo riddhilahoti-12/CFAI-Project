@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, jsonify
-from algorithms import linear_search, binary_search, is_subset_list, is_subset_set, validate_number_list
+from algorithms import linear_search, binary_search, is_subset_list, is_subset_set, bubble_sort, merge_sort, validate_number_list
 
 app = Flask(__name__)
 
@@ -62,6 +62,33 @@ def compare_subset():
                     'is_subset': set_res,
                     'time_ms': set_time * 1000,
                     'complexity': 'O(N + M)'
+                }
+            }
+        })
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': str(e)}), 400
+
+@app.route('/api/sort', methods=['POST'])
+def compare_sort():
+    try:
+        data = request.get_json()
+        arr_b = validate_number_list(data.get('array', ''))
+        arr_m = arr_b.copy()
+        
+        # Run algorithms
+        _, bubble_time = bubble_sort(arr_b)
+        _, merge_time = merge_sort(arr_m)
+        
+        return jsonify({
+            'status': 'success',
+            'results': {
+                'bubble_sort': {
+                    'time_ms': bubble_time * 1000,
+                    'complexity': 'O(N^2)'
+                },
+                'merge_sort': {
+                    'time_ms': merge_time * 1000,
+                    'complexity': 'O(N log N)'
                 }
             }
         })
