@@ -1,5 +1,76 @@
 document.addEventListener('DOMContentLoaded', () => {
     
+    // Big-O Complexity Chart Initialization
+    const ctx = document.getElementById('complexityChart').getContext('2d');
+    const elements = [10, 50, 100, 500, 1000];
+    
+    // Calculate theoretical points
+    const oLogN = elements.map(n => Math.log2(n));
+    const oN = elements.map(n => n);
+    const oNLogN = elements.map(n => n * Math.log2(n));
+    const oN2 = elements.map(n => Math.pow(n, 2));
+
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: elements.map(n => `n=${n}`),
+            datasets: [
+                {
+                    label: 'O(log N) - Binary Search',
+                    data: oLogN,
+                    borderColor: '#10b981', // Emerald
+                    fill: false,
+                    tension: 0.4
+                },
+                {
+                    label: 'O(N) - Linear Search',
+                    data: oN,
+                    borderColor: '#3b82f6', // Blue
+                    fill: false,
+                    tension: 0.4
+                },
+                {
+                    label: 'O(N log N) - Merge Sort',
+                    data: oNLogN,
+                    borderColor: '#8b5cf6', // Purple
+                    fill: false,
+                    tension: 0.4
+                },
+                {
+                    label: 'O(N^2) - Bubble Sort',
+                    data: oN2,
+                    borderColor: '#ef4444', // Red
+                    fill: false,
+                    tension: 0.4
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    type: 'logarithmic',
+                    title: {
+                        display: true,
+                        text: 'Operations (Log Scale)'
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Elements (n)'
+                    }
+                }
+            },
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Theoretical Time Complexities'
+                }
+            }
+        }
+    });
+
     const searchForm = document.getElementById('search-form');
     const searchResults = document.getElementById('search-results');
 
