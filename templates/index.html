@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Algorithm Complexity Comparator</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
@@ -17,7 +18,16 @@
     </div>
 
     <main style="width: 100%; max-width: 800px; display: flex; flex-direction: column; gap: 2rem;">
-        
+
+        <!-- Complexity Visualization Chart -->
+        <section class="glass-panel" id="chart-section">
+            <h2>Big-O Complexity Chart</h2>
+            <p class="text-secondary" style="margin-bottom: 1.5rem;">Visual comparison of common algorithmic growth rates.</p>
+            <div style="background: rgba(255,255,255,0.95); padding: 1rem; border-radius: 8px;">
+                <canvas id="complexityChart" height="150"></canvas>
+            </div>
+        </section>
+
         <!-- Search Algorithms Section -->
         <section class="glass-panel" id="search-section">
             <h2>Linear vs Binary Search</h2>
