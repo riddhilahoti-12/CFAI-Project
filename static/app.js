@@ -57,4 +57,63 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
         `;
     }
+
+    // Subset Checking Logic
+    const subsetForm = document.getElementById('subset-form');
+    const subsetResults = document.getElementById('subset-results');
+
+    subsetForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const colAInput = document.getElementById('collection-a-input').value;
+        const colBInput = document.getElementById('collection-b-input').value;
+        
+        // Show loading state
+        const submitBtn = subsetForm.querySelector('button[type="submit"]');
+        const originalText = submitBtn.innerText;
+        submitBtn.innerText = 'Calculating...';
+        submitBtn.disabled = true;
+
+        try {
+            const response = await fetch('/api/subset', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ collection_a: colAInput, collection_b: colBInput })
+            });
+
+            const data = await response.json();
+            
+            if (data.status === 'success') {
+                displaySubsetResults(data.results);
+            } else {
+                alert('Error: ' + data.message);
+            }
+        } catch (error) {
+            alert('Failed to connect to backend server.');
+        } finally {
+            submitBtn.innerText = originalText;
+            submitBtn.disabled = false;
+        }
+    });
+
+    function displaySubsetResults(results) {
+        subsetResults.style.display = 'grid';
+        subsetResults.style.gridTemplateColumns = '1fr 1fr';
+        subsetResults.style.gap = '1rem';
+        
+        subsetResults.innerHTML = `
+            <div style="background: rgba(0,0,0,0.2); padding: 1.5rem; border-radius: 8px;">
+                <h3 style="color: var(--accent-blue);">List Approach</h3>
+                <p style="font-size: 1.5rem; margin: 0.5rem 0;">${results.subset_list.time_ms.toFixed(4)} ms</p>
+                <p class="text-secondary">Complexity: ${results.subset_list.complexity}</p>
+                <p class="text-secondary">Is Subset: ${results.subset_list.is_subset}</p>
+            </div>
+            <div style="background: rgba(0,0,0,0.2); padding: 1.5rem; border-radius: 8px;">
+                <h3 style="color: var(--accent-purple);">Set Approach</h3>
+                <p style="font-size: 1.5rem; margin: 0.5rem 0;">${results.subset_set.time_ms.toFixed(4)} ms</p>
+                <p class="text-secondary">Complexity: ${results.subset_set.complexity}</p>
+                <p class="text-secondary">Is Subset: ${results.subset_set.is_subset}</p>
+            </div>
+        `;
+    }
 });
