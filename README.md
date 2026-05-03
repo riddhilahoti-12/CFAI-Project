@@ -17,7 +17,7 @@ This project provides an interactive frontend interface for students and develop
 
 ## 📈 Project Progress
 
-- **Day 1:** Initial setup, project structure, and Flask server initialization. *(Completed)*
+- **Day 1:** Initial setup, project structure, and Flask server initialization. 
 - **Day 2:** Implemented global CSS design system, typography, and backend algorithm skeletons. *(Completed)*
 - **Day 3:** Implemented Linear and Binary Search logic, created API endpoints, and built the interactive frontend UI. *(Completed)*
 - **Day 4:** Implemented Subset Checking Problem (Lists vs Sets), generated dynamic large datasets, and added error handling. *(Completed)*
