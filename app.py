@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, jsonify
-from algorithms import linear_search, binary_search, is_subset_list, is_subset_set, validate_number_list
+from algorithms import linear_search, binary_search, hash_search, is_subset_list, is_subset_set, validate_number_list
 
 app = Flask(__name__)
 
@@ -17,9 +17,13 @@ def compare_search():
         # Ensure array is sorted for binary search
         arr.sort()
         
+        # Create hash table for O(1) search
+        hash_table = {val: idx for idx, val in enumerate(arr)}
+        
         # Run algorithms
         linear_res, linear_time = linear_search(arr, target)
         binary_res, binary_time = binary_search(arr, target)
+        hash_res, hash_time = hash_search(hash_table, target)
         
         return jsonify({
             'status': 'success',
@@ -33,6 +37,11 @@ def compare_search():
                     'index': binary_res,
                     'time_ms': binary_time * 1000,
                     'complexity': 'O(log N)'
+                },
+                'hash_search': {
+                    'index': hash_res,
+                    'time_ms': hash_time * 1000,
+                    'complexity': 'O(1)'
                 }
             }
         })

@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const elements = [10, 50, 100, 500, 1000];
     
     // Calculate theoretical points
+    const o1 = elements.map(n => 1);
     const oLogN = elements.map(n => Math.log2(n));
     const oN = elements.map(n => n);
     const oN2 = elements.map(n => Math.pow(n, 2));
@@ -14,6 +15,13 @@ document.addEventListener('DOMContentLoaded', () => {
         data: {
             labels: elements.map(n => `n=${n}`),
             datasets: [
+                {
+                    label: 'O(1) - Hash Search',
+                    data: o1,
+                    borderColor: '#f59e0b', // Amber
+                    fill: false,
+                    tension: 0.4
+                },
                 {
                     label: 'O(log N) - Binary Search',
                     data: oLogN,
@@ -102,7 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function displaySearchResults(results) {
         searchResults.style.display = 'grid';
-        searchResults.style.gridTemplateColumns = '1fr 1fr';
+        searchResults.style.gridTemplateColumns = 'repeat(3, 1fr)';
         searchResults.style.gap = '1rem';
         
         searchResults.innerHTML = `
@@ -117,6 +125,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 <p style="font-size: 1.5rem; margin: 0.5rem 0;">${results.binary_search.time_ms.toFixed(4)} ms</p>
                 <p class="text-secondary">Complexity: ${results.binary_search.complexity}</p>
                 <p class="text-secondary">Found at index: ${results.binary_search.index}</p>
+            </div>
+            <div style="background: rgba(0,0,0,0.2); padding: 1.5rem; border-radius: 8px;">
+                <h3 style="color: #f59e0b;">Hash Search</h3>
+                <p style="font-size: 1.5rem; margin: 0.5rem 0;">${results.hash_search.time_ms.toFixed(4)} ms</p>
+                <p class="text-secondary">Complexity: ${results.hash_search.complexity}</p>
+                <p class="text-secondary">Found at index: ${results.hash_search.index}</p>
             </div>
         `;
     }

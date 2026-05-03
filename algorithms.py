@@ -55,6 +55,14 @@ def binary_search(arr, target):
             right = mid - 1
     return -1
 
+@time_it
+def hash_search(hash_table, target):
+    """
+    Performs a search using a hash table (dict).
+    Returns the index if found, else -1.
+    """
+    return hash_table.get(target, -1)
+
 # --- Subset Algorithms (Skeletons) ---
 @time_it
 def is_subset_list(collection_a, collection_b):
