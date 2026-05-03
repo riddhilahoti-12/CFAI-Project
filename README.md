@@ -21,7 +21,7 @@ This project provides an interactive frontend interface for students and develop
 - **Day 2:** Implemented global CSS design system, typography, and backend algorithm skeletons. 
 - **Day 3:** Implemented Linear and Binary Search logic, created API endpoints, and built the interactive frontend UI. 
 - **Day 4:** Implemented Subset Checking Problem (Lists vs Sets), generated dynamic large datasets, and added error handling. 
-- **Day 5:** Implemented O(1) Hashing technique for search and updated the UI to compare its performance against Linear and Binary search algorithms. Removed the complexity chart to focus on raw performance metrics. *(Completed)*
+- **Day 5:** Implemented O(1) Hashing technique for search and updated the UI to compare its performance against Linear and Binary search algorithms. Removed the complexity chart to focus on raw performance metrics. 
 
 ## 🔮 Future Work
 
