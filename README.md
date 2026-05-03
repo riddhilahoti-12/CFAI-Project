@@ -25,8 +25,9 @@ This project provides an interactive frontend interface for students and develop
 
 ## 🔮 Future Work
 
-- Space complexity analysis algorithms.
-- Export results to CSV.
+- Implementing complex searching techniques for effective comparision.
+- Graphical representation of algorithms.
+- Advanced features for additional knowledge.
 - Deploying the web application to a live server.
 
 
