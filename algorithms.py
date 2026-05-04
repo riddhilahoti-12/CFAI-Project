@@ -17,14 +17,21 @@ def time_it(func):
 def validate_number_list(input_string):
     """
     Parses a string into a list of integers.
-    Raises ValueError if invalid.
+    Raises ValueError if invalid or empty.
     """
+    if not input_string or not input_string.strip():
+        raise ValueError("Input cannot be empty. Please provide a valid list of numbers.")
     try:
         # Handles comma separated or space separated
         cleaned = input_string.replace(',', ' ').split()
+        if not cleaned:
+            raise ValueError("No valid numbers found in the input.")
         return [int(x) for x in cleaned]
-    except ValueError:
-        raise ValueError("Invalid input: Please provide a valid list of numbers.")
+    except ValueError as e:
+        # Re-raise the custom message if it's already generated, otherwise generic message
+        if "No valid numbers" in str(e):
+            raise
+        raise ValueError("Invalid format: Please provide only integer values separated by commas or spaces.")
 
 # --- Search Algorithms (Skeletons) ---
 @time_it
