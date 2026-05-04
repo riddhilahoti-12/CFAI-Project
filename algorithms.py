@@ -63,6 +63,50 @@ def hash_search(hash_table, target):
     """
     return hash_table.get(target, -1)
 
+# --- BST Algorithms ---
+class TreeNode:
+    def __init__(self, val, index):
+        self.val = val
+        self.index = index
+        self.left = None
+        self.right = None
+
+def build_bst(arr):
+    if not arr:
+        return None
+    root = TreeNode(arr[0], 0)
+    for i in range(1, len(arr)):
+        val = arr[i]
+        curr = root
+        while True:
+            if val < curr.val:
+                if curr.left is None:
+                    curr.left = TreeNode(val, i)
+                    break
+                curr = curr.left
+            else:
+                if curr.right is None:
+                    curr.right = TreeNode(val, i)
+                    break
+                curr = curr.right
+    return root
+
+@time_it
+def bst_search(root: TreeNode, target: int) -> int:
+    """
+    Performs a search on a Binary Search Tree.
+    Returns the index if found, else -1.
+    """
+    curr = root
+    while curr:
+        if curr.val == target:
+            return curr.index
+        elif target < curr.val:
+            curr = curr.left
+        else:
+            curr = curr.right
+    return -1
+
 # --- Subset Algorithms (Skeletons) ---
 @time_it
 def is_subset_list(collection_a, collection_b):
