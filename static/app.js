@@ -5,8 +5,14 @@ document.addEventListener('DOMContentLoaded', () => {
     searchForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         
-        const arrayInput = document.getElementById('array-input').value;
-        const targetInput = document.getElementById('target-input').value;
+        const arrayInput = document.getElementById('array-input').value.trim();
+        const targetInput = document.getElementById('target-input').value.trim();
+        
+        // Frontend Validation
+        if (!arrayInput || !targetInput) {
+            showError('Please fill in both the dataset and the target number.');
+            return;
+        }
         
         // Show loading state
         const submitBtn = searchForm.querySelector('button[type="submit"]');
