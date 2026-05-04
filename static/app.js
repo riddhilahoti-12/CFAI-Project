@@ -5,8 +5,14 @@ document.addEventListener('DOMContentLoaded', () => {
     searchForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         
-        const arrayInput = document.getElementById('array-input').value;
-        const targetInput = document.getElementById('target-input').value;
+        const arrayInput = document.getElementById('array-input').value.trim();
+        const targetInput = document.getElementById('target-input').value.trim();
+        
+        // Frontend Validation
+        if (!arrayInput || !targetInput) {
+            showError('Please fill in both the dataset and the target number.');
+            return;
+        }
         
         // Show loading state
         const submitBtn = searchForm.querySelector('button[type="submit"]');
@@ -42,25 +48,25 @@ document.addEventListener('DOMContentLoaded', () => {
         searchResults.style.gap = '1rem';
         
         searchResults.innerHTML = `
-            <div style="background: rgba(0,0,0,0.2); padding: 1.5rem; border-radius: 8px;">
+            <div class="result-card">
                 <h3 style="color: var(--accent-blue);">Linear Search</h3>
                 <p style="font-size: 1.5rem; margin: 0.5rem 0;">${results.linear_search.time_ms.toFixed(4)} ms</p>
                 <p class="text-secondary">Complexity: ${results.linear_search.complexity}</p>
                 <p class="text-secondary">Found at index: ${results.linear_search.index}</p>
             </div>
-            <div style="background: rgba(0,0,0,0.2); padding: 1.5rem; border-radius: 8px;">
+            <div class="result-card">
                 <h3 style="color: var(--accent-purple);">Binary Search</h3>
                 <p style="font-size: 1.5rem; margin: 0.5rem 0;">${results.binary_search.time_ms.toFixed(4)} ms</p>
                 <p class="text-secondary">Complexity: ${results.binary_search.complexity}</p>
                 <p class="text-secondary">Found at index: ${results.binary_search.index}</p>
             </div>
-            <div style="background: rgba(0,0,0,0.2); padding: 1.5rem; border-radius: 8px;">
+            <div class="result-card">
                 <h3 style="color: #f59e0b;">Hash Search</h3>
                 <p style="font-size: 1.5rem; margin: 0.5rem 0;">${results.hash_search.time_ms.toFixed(4)} ms</p>
                 <p class="text-secondary">Complexity: ${results.hash_search.complexity}</p>
                 <p class="text-secondary">Found at index: ${results.hash_search.index}</p>
             </div>
-            <div style="background: rgba(0,0,0,0.2); padding: 1.5rem; border-radius: 8px;">
+            <div class="result-card">
                 <h3 style="color: #10b981;">BST Search</h3>
                 <p style="font-size: 1.5rem; margin: 0.5rem 0;">${results.bst_search.time_ms.toFixed(4)} ms</p>
                 <p class="text-secondary">Complexity: ${results.bst_search.complexity}</p>
@@ -115,13 +121,13 @@ document.addEventListener('DOMContentLoaded', () => {
         subsetResults.style.gap = '1rem';
         
         subsetResults.innerHTML = `
-            <div style="background: rgba(0,0,0,0.2); padding: 1.5rem; border-radius: 8px;">
+            <div class="result-card">
                 <h3 style="color: var(--accent-blue);">List Approach</h3>
                 <p style="font-size: 1.5rem; margin: 0.5rem 0;">${results.subset_list.time_ms.toFixed(4)} ms</p>
                 <p class="text-secondary">Complexity: ${results.subset_list.complexity}</p>
                 <p class="text-secondary">Is Subset: ${results.subset_list.is_subset}</p>
             </div>
-            <div style="background: rgba(0,0,0,0.2); padding: 1.5rem; border-radius: 8px;">
+            <div class="result-card">
                 <h3 style="color: var(--accent-purple);">Set Approach</h3>
                 <p style="font-size: 1.5rem; margin: 0.5rem 0;">${results.subset_set.time_ms.toFixed(4)} ms</p>
                 <p class="text-secondary">Complexity: ${results.subset_set.complexity}</p>

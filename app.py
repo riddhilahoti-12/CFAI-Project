@@ -55,8 +55,10 @@ def compare_search():
                 }
             }
         })
+    except ValueError as ve:
+        return jsonify({'status': 'error', 'message': f"Validation Error: {str(ve)}"}), 400
     except Exception as e:
-        return jsonify({'status': 'error', 'message': str(e)}), 400
+        return jsonify({'status': 'error', 'message': f"Internal Error: {str(e)}"}), 500
 
 @app.route('/api/subset', methods=['POST'])
 def compare_subset():
