@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function displaySearchResults(results) {
         searchResults.style.display = 'grid';
-        searchResults.style.gridTemplateColumns = 'repeat(3, 1fr)';
+        searchResults.style.gridTemplateColumns = 'repeat(4, 1fr)';
         searchResults.style.gap = '1rem';
         
         searchResults.innerHTML = `
@@ -59,6 +59,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 <p style="font-size: 1.5rem; margin: 0.5rem 0;">${results.hash_search.time_ms.toFixed(4)} ms</p>
                 <p class="text-secondary">Complexity: ${results.hash_search.complexity}</p>
                 <p class="text-secondary">Found at index: ${results.hash_search.index}</p>
+            </div>
+            <div style="background: rgba(0,0,0,0.2); padding: 1.5rem; border-radius: 8px;">
+                <h3 style="color: #10b981;">BST Search</h3>
+                <p style="font-size: 1.5rem; margin: 0.5rem 0;">${results.bst_search.time_ms.toFixed(4)} ms</p>
+                <p class="text-secondary">Complexity: ${results.bst_search.complexity}</p>
+                <p class="text-secondary">Found at index: ${results.bst_search.index}</p>
             </div>
         `;
     }
