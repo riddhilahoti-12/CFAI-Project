@@ -73,13 +73,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 <p class="text-secondary">Found at index: ${results.bst_search.index}</p>
             </div>
             <div class="result-card">
-                <h3 style="color: #ef4444;">AVL Search</h3>
+                <h3 style="color: var(--accent-red);">AVL Search</h3>
                 <p style="font-size: 1.5rem; margin: 0.5rem 0;">${results.avl_search.time_ms.toFixed(4)} ms</p>
                 <p class="text-secondary">Complexity: ${results.avl_search.complexity}</p>
                 <p class="text-secondary">Found at index: ${results.avl_search.index}</p>
             </div>
             <div class="result-card">
-                <h3 style="color: #3b82f6;">Exponential Search</h3>
+                <h3 style="color: var(--accent-blue);">Exponential Search</h3>
                 <p style="font-size: 1.5rem; margin: 0.5rem 0;">${results.exponential_search.time_ms.toFixed(4)} ms</p>
                 <p class="text-secondary">Complexity: ${results.exponential_search.complexity}</p>
                 <p class="text-secondary">Found at index: ${results.exponential_search.index}</p>
