@@ -70,6 +70,37 @@ def hash_search(hash_table, target):
     """
     return hash_table.get(target, -1)
 
+@time_it
+def exponential_search(arr, target):
+    """
+    Performs an exponential search on a SORTED list.
+    Returns the index if found, else -1.
+    """
+    if not arr:
+        return -1
+    if arr[0] == target:
+        return 0
+    
+    n = len(arr)
+    i = 1
+    while i < n and arr[i] <= target:
+        i = i * 2
+    
+    # Binary search within the range
+    left = i // 2
+    right = min(i, n - 1)
+    
+    while left <= right:
+        mid = (left + right) // 2
+        if arr[mid] == target:
+            return mid
+        elif arr[mid] < target:
+            left = mid + 1
+        else:
+            right = mid - 1
+            
+    return -1
+
 # --- BST Algorithms ---
 class TreeNode:
     def __init__(self, val, index):
@@ -102,6 +133,102 @@ def build_bst(arr):
 def bst_search(root: TreeNode, target: int) -> int:
     """
     Performs a search on a Binary Search Tree.
+    Returns the index if found, else -1.
+    """
+    curr = root
+    while curr:
+        if curr.val == target:
+            return curr.index
+        elif target < curr.val:
+            curr = curr.left
+        else:
+            curr = curr.right
+    return -1
+
+# --- AVL Tree Algorithms ---
+class AVLNode:
+    def __init__(self, val, index):
+        self.val = val
+        self.index = index
+        self.left = None
+        self.right = None
+        self.height = 1
+
+def get_height(node):
+    if not node:
+        return 0
+    return node.height
+
+def get_balance(node):
+    if not node:
+        return 0
+    return get_height(node.left) - get_height(node.right)
+
+def right_rotate(y):
+    x = y.left
+    T2 = x.right
+    x.right = y
+    y.left = T2
+    y.height = 1 + max(get_height(y.left), get_height(y.right))
+    x.height = 1 + max(get_height(x.left), get_height(x.right))
+    return x
+
+def left_rotate(x):
+    y = x.right
+    T2 = y.left
+    y.left = x
+    x.right = T2
+    x.height = 1 + max(get_height(x.left), get_height(x.right))
+    y.height = 1 + max(get_height(y.left), get_height(y.right))
+    return y
+
+def avl_insert(node, val, index):
+    if not node:
+        return AVLNode(val, index)
+        
+    if val < node.val:
+        node.left = avl_insert(node.left, val, index)
+    elif val > node.val:
+        node.right = avl_insert(node.right, val, index)
+    else:
+        # Equal values, handle by ignoring or attaching left. Ignore for simplicity.
+        return node
+        
+    node.height = 1 + max(get_height(node.left), get_height(node.right))
+    balance = get_balance(node)
+    
+    # Left Left Case
+    if balance > 1 and val < node.left.val:
+        return right_rotate(node)
+        
+    # Right Right Case
+    if balance < -1 and val > node.right.val:
+        return left_rotate(node)
+        
+    # Left Right Case
+    if balance > 1 and val > node.left.val:
+        node.left = left_rotate(node.left)
+        return right_rotate(node)
+        
+    # Right Left Case
+    if balance < -1 and val < node.right.val:
+        node.right = right_rotate(node.right)
+        return left_rotate(node)
+        
+    return node
+
+def build_avl(arr):
+    if not arr:
+        return None
+    root = None
+    for i, val in enumerate(arr):
+        root = avl_insert(root, val, i)
+    return root
+
+@time_it
+def avl_search(root: AVLNode, target: int) -> int:
+    """
+    Performs a search on an AVL Tree.
     Returns the index if found, else -1.
     """
     curr = root
