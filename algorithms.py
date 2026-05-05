@@ -182,6 +182,49 @@ def left_rotate(x):
     y.height = 1 + max(get_height(y.left), get_height(y.right))
     return y
 
+def avl_insert(node, val, index):
+    if not node:
+        return AVLNode(val, index)
+        
+    if val < node.val:
+        node.left = avl_insert(node.left, val, index)
+    elif val > node.val:
+        node.right = avl_insert(node.right, val, index)
+    else:
+        # Equal values, handle by ignoring or attaching left. Ignore for simplicity.
+        return node
+        
+    node.height = 1 + max(get_height(node.left), get_height(node.right))
+    balance = get_balance(node)
+    
+    # Left Left Case
+    if balance > 1 and val < node.left.val:
+        return right_rotate(node)
+        
+    # Right Right Case
+    if balance < -1 and val > node.right.val:
+        return left_rotate(node)
+        
+    # Left Right Case
+    if balance > 1 and val > node.left.val:
+        node.left = left_rotate(node.left)
+        return right_rotate(node)
+        
+    # Right Left Case
+    if balance < -1 and val < node.right.val:
+        node.right = right_rotate(node.right)
+        return left_rotate(node)
+        
+    return node
+
+def build_avl(arr):
+    if not arr:
+        return None
+    root = None
+    for i, val in enumerate(arr):
+        root = avl_insert(root, val, i)
+    return root
+
 # --- Subset Algorithms (Skeletons) ---
 @time_it
 def is_subset_list(collection_a, collection_b):
