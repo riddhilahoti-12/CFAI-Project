@@ -225,6 +225,22 @@ def build_avl(arr):
         root = avl_insert(root, val, i)
     return root
 
+@time_it
+def avl_search(root: AVLNode, target: int) -> int:
+    """
+    Performs a search on an AVL Tree.
+    Returns the index if found, else -1.
+    """
+    curr = root
+    while curr:
+        if curr.val == target:
+            return curr.index
+        elif target < curr.val:
+            curr = curr.left
+        else:
+            curr = curr.right
+    return -1
+
 # --- Subset Algorithms (Skeletons) ---
 @time_it
 def is_subset_list(collection_a, collection_b):
