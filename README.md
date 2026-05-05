@@ -23,7 +23,7 @@ This project provides an interactive frontend interface for students and develop
 - **Day 4:** Implemented Subset Checking Problem (Lists vs Sets), generated dynamic large datasets, and added error handling. 
 - **Day 5:** Implemented O(1) Hashing technique for search and updated the UI to compare its performance against Linear and Binary search algorithms. 
 - **Day 6:** Added Binary Search Tree (BST) for O(log N) structured search and updated the comparison grid to a 4-column layout.
-
+- **Day 7:** Added AVL Search Tree and Exponential Search for an advanced 6-way performance comparison.
 ## 🔮 Future Work
 
 - Implementing complex searching techniques for effective comparision.
