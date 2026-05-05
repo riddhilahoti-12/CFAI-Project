@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, jsonify
-from algorithms import linear_search, binary_search, hash_search, bst_search, build_bst, is_subset_list, is_subset_set, validate_number_list
+from algorithms import linear_search, binary_search, hash_search, bst_search, build_bst, is_subset_list, is_subset_set, validate_number_list, exponential_search, build_avl, avl_search
 
 app = Flask(__name__)
 
