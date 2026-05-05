@@ -24,11 +24,16 @@ def compare_search():
         # Note: Building BST takes time, but we only time the search
         bst_root = build_bst(arr)
         
+        # Build AVL
+        avl_root = build_avl(arr)
+        
         # Run algorithms
         linear_res, linear_time = linear_search(arr, target)
         binary_res, binary_time = binary_search(arr, target)
         hash_res, hash_time = hash_search(hash_table, target)
         bst_res, bst_time = bst_search(bst_root, target)
+        avl_res, avl_time = avl_search(avl_root, target)
+        exp_res, exp_time = exponential_search(arr, target)
         
         return jsonify({
             'status': 'success',
@@ -52,6 +57,16 @@ def compare_search():
                     'index': bst_res,
                     'time_ms': bst_time * 1000,
                     'complexity': 'O(h) / O(log N)'
+                },
+                'avl_search': {
+                    'index': avl_res,
+                    'time_ms': avl_time * 1000,
+                    'complexity': 'O(log N)'
+                },
+                'exponential_search': {
+                    'index': exp_res,
+                    'time_ms': exp_time * 1000,
+                    'complexity': 'O(log N)'
                 }
             }
         })
