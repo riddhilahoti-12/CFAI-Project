@@ -114,6 +114,26 @@ def bst_search(root: TreeNode, target: int) -> int:
             curr = curr.right
     return -1
 
+@time_it
+def bfs_search(root: TreeNode, target: int) -> int:
+    """
+    Performs a level-order (Breadth-First) search on a Binary Search Tree.
+    Returns the index if found, else -1.
+    """
+    if not root:
+        return -1
+    queue = [root]
+    while queue:
+        curr = queue.pop(0)
+        if curr.val == target:
+            return curr.index
+        if curr.left:
+            queue.append(curr.left)
+        if curr.right:
+            queue.append(curr.right)
+    return -1
+
+
 # --- AVL Tree Algorithms ---
 class AVLNode:
     def __init__(self, val, index):
