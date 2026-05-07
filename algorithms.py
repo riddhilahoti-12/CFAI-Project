@@ -250,4 +250,23 @@ def is_subset_set(collection_a, collection_b):
     set_b = set(collection_b)
     return set_a.issubset(set_b)
 
+@time_it
+def is_subset_sorting(collection_a, collection_b):
+    """
+    Checks if collection_a is a subset of collection_b using sorting O(N log N + M log M).
+    """
+    a_sorted = sorted(collection_a)
+    b_sorted = sorted(collection_b)
+    
+    i, j = 0, 0
+    while i < len(a_sorted) and j < len(b_sorted):
+        if a_sorted[i] == b_sorted[j]:
+            i += 1
+            j += 1
+        elif a_sorted[i] > b_sorted[j]:
+            j += 1
+        else:
+            return False
+    return i == len(a_sorted)
+
 
