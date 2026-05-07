@@ -79,10 +79,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 <p class="text-secondary">Found at index: ${results.avl_search.index}</p>
             </div>
             <div class="result-card">
-                <h3 style="color: var(--accent-blue);">Exponential Search</h3>
-                <p style="font-size: 1.5rem; margin: 0.5rem 0;">${results.exponential_search.time_ms.toFixed(4)} ms</p>
-                <p class="text-secondary">Complexity: ${results.exponential_search.complexity}</p>
-                <p class="text-secondary">Found at index: ${results.exponential_search.index}</p>
+                <h3 style="color: var(--accent-blue);">BFS Search</h3>
+                <p style="font-size: 1.5rem; margin: 0.5rem 0;">${results.bfs_search.time_ms.toFixed(4)} ms</p>
+                <p class="text-secondary">Complexity: ${results.bfs_search.complexity}</p>
+                <p class="text-secondary">Found at index: ${results.bfs_search.index}</p>
             </div>
         `;
     }
@@ -129,7 +129,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function displaySubsetResults(results) {
         subsetResults.style.display = 'grid';
-        subsetResults.style.gridTemplateColumns = '1fr 1fr';
+        subsetResults.style.gridTemplateColumns = 'repeat(3, 1fr)';
         subsetResults.style.gap = '1rem';
         
         subsetResults.innerHTML = `
@@ -144,6 +144,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 <p style="font-size: 1.5rem; margin: 0.5rem 0;">${results.subset_set.time_ms.toFixed(4)} ms</p>
                 <p class="text-secondary">Complexity: ${results.subset_set.complexity}</p>
                 <p class="text-secondary">Is Subset: ${results.subset_set.is_subset}</p>
+            </div>
+            <div class="result-card">
+                <h3 style="color: var(--accent-red);">Sorting Approach</h3>
+                <p style="font-size: 1.5rem; margin: 0.5rem 0;">${results.subset_sorting.time_ms.toFixed(4)} ms</p>
+                <p class="text-secondary">Complexity: ${results.subset_sorting.complexity}</p>
+                <p class="text-secondary">Is Subset: ${results.subset_sorting.is_subset}</p>
             </div>
         `;
     }
