@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, jsonify
-from algorithms import linear_search, binary_search, hash_search, bst_search, build_bst, is_subset_list, is_subset_set, validate_number_list, exponential_search, build_avl, avl_search
+from algorithms import linear_search, binary_search, hash_search, bst_search, build_bst, is_subset_list, is_subset_set, is_subset_sorting, validate_number_list, bfs_search, build_avl, avl_search
 
 app = Flask(__name__)
 
@@ -33,7 +33,7 @@ def compare_search():
         hash_res, hash_time = hash_search(hash_table, target)
         bst_res, bst_time = bst_search(bst_root, target)
         avl_res, avl_time = avl_search(avl_root, target)
-        exp_res, exp_time = exponential_search(arr, target)
+        bfs_res, bfs_time = bfs_search(bst_root, target)
         
         return jsonify({
             'status': 'success',
@@ -63,10 +63,10 @@ def compare_search():
                     'time_ms': avl_time * 1000,
                     'complexity': 'O(log N)'
                 },
-                'exponential_search': {
-                    'index': exp_res,
-                    'time_ms': exp_time * 1000,
-                    'complexity': 'O(log N)'
+                'bfs_search': {
+                    'index': bfs_res,
+                    'time_ms': bfs_time * 1000,
+                    'complexity': 'O(N)'
                 }
             }
         })
@@ -85,6 +85,7 @@ def compare_subset():
         # Run algorithms
         list_res, list_time = is_subset_list(collection_a, collection_b)
         set_res, set_time = is_subset_set(collection_a, collection_b)
+        sort_res, sort_time = is_subset_sorting(collection_a, collection_b)
         
         return jsonify({
             'status': 'success',
@@ -98,6 +99,11 @@ def compare_subset():
                     'is_subset': set_res,
                     'time_ms': set_time * 1000,
                     'complexity': 'O(N + M)'
+                },
+                'subset_sorting': {
+                    'is_subset': sort_res,
+                    'time_ms': sort_time * 1000,
+                    'complexity': 'O(N log N + M log M)'
                 }
             }
         })
