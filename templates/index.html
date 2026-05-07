@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Interactive web application to compare time complexities of various search algorithms including Linear, Binary, Hash, BST, AVL, and Exponential Search.">
+    <meta name="description" content="Interactive web application to compare time complexities of various search algorithms including Linear, Binary, Hash, BST, AVL, and BFS Search.">
     <title>Algorithm Complexity Comparator</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
@@ -23,7 +23,7 @@
 
         <!-- Search Algorithms Section -->
         <section class="glass-panel" id="search-section">
-            <h2>Linear vs Binary vs Hash vs BST vs AVL vs Exponential Search</h2>
+            <h2>Linear vs Binary vs Hash vs BST vs AVL vs BFS Search</h2>
             <p class="text-secondary" style="margin-bottom: 1.5rem;">Compare O(N) vs O(log N) vs O(1) vs O(h) time complexities across 6 algorithms.</p>
             
             <form id="search-form" style="display: flex; flex-direction: column; gap: 1rem;">
@@ -51,8 +51,8 @@
 
         <!-- Subset Checking Section -->
         <section class="glass-panel" id="subset-section">
-            <h2>List vs Set Subset Checking</h2>
-            <p class="text-secondary" style="margin-bottom: 1.5rem;">Compare O(N * M) vs O(N + M) time complexities.</p>
+            <h2>List vs Set vs Sorting Subset Checking</h2>
+            <p class="text-secondary" style="margin-bottom: 1.5rem;">Compare O(N * M) vs O(N + M) vs O(N log N + M log M) time complexities.</p>
             
             <form id="subset-form" style="display: flex; flex-direction: column; gap: 1rem;">
                 <div style="display: flex; flex-direction: column; gap: 0.5rem;">
