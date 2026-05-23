@@ -25,6 +25,7 @@ This project provides an interactive frontend interface for students and develop
 - **Day 6:** Added Binary Search Tree (BST) for O(log N) structured search and updated the comparison grid to a 4-column layout.
 - **Day 7:** Added AVL Search Tree 5-way performance comparison.
 - **Day 8:** Added BFS search algorithm and one more sorting-based subset-checking technique; improved the CSS styling for cleaner layout, sharper cards, and better readability.
+- **Day 9:** Added dynamic graph visualization and recommendation logic to clearly highlight the fastest and slowest search techniques for each input scenario.
 
 ## 🔮 Future Work
 
