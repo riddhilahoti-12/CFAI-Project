@@ -207,6 +207,105 @@ document.addEventListener('DOMContentLoaded', () => {
     // Subset Checking Logic
     const subsetForm = document.getElementById('subset-form');
     const subsetResults = document.getElementById('subset-results');
+    let subsetChart = null;
+
+    function formatSubsetLabel(key) {
+        return key
+            .replace('subset_', '')
+            .replace('list', 'List')
+            .replace('set', 'Set')
+            .replace('sorting', 'Sorting');
+    }
+
+    function analyzeSubsetPerformance(results) {
+        const keys = ['subset_list', 'subset_set', 'subset_sorting'];
+        const performance = keys.map((key) => ({
+            key,
+            name: formatSubsetLabel(key),
+            time_ms: results[key].time_ms,
+            complexity: results[key].complexity,
+            is_subset: results[key].is_subset
+        }));
+
+        performance.sort((a, b) => a.time_ms - b.time_ms);
+
+        const best = performance[0];
+        const worst = performance[performance.length - 1];
+
+        return {
+            keys,
+            performance,
+            best,
+            worst
+        };
+    }
+
+    function createSubsetComparisonChart(results, analysis) {
+        const ctx = document.getElementById('subset-chart').getContext('2d');
+        const labels = analysis.keys.map(formatSubsetLabel);
+        const values = analysis.keys.map((key) => results[key].time_ms);
+        const backgroundColors = analysis.keys.map((key) => {
+            if (key === analysis.best.key) return 'rgba(16, 185, 129, 0.9)';
+            if (key === analysis.worst.key) return 'rgba(239, 68, 68, 0.9)';
+            return 'rgba(168, 85, 247, 0.6)';
+        });
+        const borderColors = analysis.keys.map((key) => {
+            if (key === analysis.best.key) return 'rgba(16, 185, 129, 1)';
+            if (key === analysis.worst.key) return 'rgba(239, 68, 68, 1)';
+            return 'rgba(168, 85, 247, 0.9)';
+        });
+
+        if (subsetChart) {
+            subsetChart.destroy();
+        }
+
+        subsetChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels,
+                datasets: [{
+                    label: 'Subset Check Time (ms)',
+                    data: values,
+                    backgroundColor: backgroundColors,
+                    borderColor: borderColors,
+                    borderWidth: 2,
+                    borderRadius: 8,
+                    maxBarThickness: 48
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: (value) => value.toFixed(2)
+                        },
+                        title: {
+                            display: true,
+                            text: 'Milliseconds'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: (context) => `${context.parsed.y.toFixed(4)} ms`
+                        }
+                    },
+                    title: {
+                        display: true,
+                        text: 'Subset Checking Performance Across 3 Algorithms',
+                        font: { size: 18 }
+                    }
+                }
+            }
+        });
+    }
 
     subsetForm.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -243,30 +342,42 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function displaySubsetResults(results) {
-        subsetResults.style.display = 'grid';
-        subsetResults.style.gridTemplateColumns = 'repeat(3, 1fr)';
-        subsetResults.style.gap = '1rem';
-        
+        const analysis = analyzeSubsetPerformance(results);
+
+        subsetResults.style.display = 'block';
         subsetResults.innerHTML = `
-            <div class="result-card">
-                <h3 style="color: var(--accent-blue);">List Approach</h3>
-                <p style="font-size: 1.5rem; margin: 0.5rem 0;">${results.subset_list.time_ms.toFixed(4)} ms</p>
-                <p class="text-secondary">Complexity: ${results.subset_list.complexity}</p>
-                <p class="text-secondary">Is Subset: ${results.subset_list.is_subset}</p>
+            <div class="chart-card">
+                <canvas id="subset-chart" style="width: 100%; height: 320px;"></canvas>
             </div>
-            <div class="result-card">
-                <h3 style="color: var(--accent-purple);">Set Approach</h3>
-                <p style="font-size: 1.5rem; margin: 0.5rem 0;">${results.subset_set.time_ms.toFixed(4)} ms</p>
-                <p class="text-secondary">Complexity: ${results.subset_set.complexity}</p>
-                <p class="text-secondary">Is Subset: ${results.subset_set.is_subset}</p>
+            <div class="recommendation-card">
+                <h3 style="color: var(--accent-purple); margin-bottom: 0.75rem;">Recommended Subset Technique</h3>
+                <p style="font-size: 1.15rem; margin-bottom: 0.5rem;">Best choice: <strong>${analysis.best.name}</strong> — fastest time at <strong>${analysis.best.time_ms.toFixed(4)} ms</strong>.</p>
+                <p style="font-size: 1.15rem; margin-bottom: 0.5rem;">Avoid if performance matters: <strong>${analysis.worst.name}</strong> — slowest time at <strong>${analysis.worst.time_ms.toFixed(4)} ms</strong>.</p>
+                <p class="text-secondary">This chart highlights the fastest algorithm in green and the slowest in red for this input scenario.</p>
             </div>
-            <div class="result-card">
-                <h3 style="color: var(--accent-red);">Sorting Approach</h3>
-                <p style="font-size: 1.5rem; margin: 0.5rem 0;">${results.subset_sorting.time_ms.toFixed(4)} ms</p>
-                <p class="text-secondary">Complexity: ${results.subset_sorting.complexity}</p>
-                <p class="text-secondary">Is Subset: ${results.subset_sorting.is_subset}</p>
+            <div class="search-results-grid">
+                <div class="result-card">
+                    <h3 style="color: var(--accent-blue);">List Approach</h3>
+                    <p style="font-size: 1.5rem; margin: 0.5rem 0;">${results.subset_list.time_ms.toFixed(4)} ms</p>
+                    <p class="text-secondary">Complexity: ${results.subset_list.complexity}</p>
+                    <p class="text-secondary">Is Subset: ${results.subset_list.is_subset}</p>
+                </div>
+                <div class="result-card">
+                    <h3 style="color: var(--accent-purple);">Set Approach</h3>
+                    <p style="font-size: 1.5rem; margin: 0.5rem 0;">${results.subset_set.time_ms.toFixed(4)} ms</p>
+                    <p class="text-secondary">Complexity: ${results.subset_set.complexity}</p>
+                    <p class="text-secondary">Is Subset: ${results.subset_set.is_subset}</p>
+                </div>
+                <div class="result-card">
+                    <h3 style="color: var(--accent-red);">Sorting Approach</h3>
+                    <p style="font-size: 1.5rem; margin: 0.5rem 0;">${results.subset_sorting.time_ms.toFixed(4)} ms</p>
+                    <p class="text-secondary">Complexity: ${results.subset_sorting.complexity}</p>
+                    <p class="text-secondary">Is Subset: ${results.subset_sorting.is_subset}</p>
+                </div>
             </div>
         `;
+
+        createSubsetComparisonChart(results, analysis);
     }
 
     // Error Handling UI
