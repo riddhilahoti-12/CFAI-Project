@@ -27,6 +27,7 @@ This project provides an interactive frontend interface for students and develop
 - **Day 8:** Added BFS search algorithm and one more sorting-based subset-checking technique; improved the CSS styling for cleaner layout, sharper cards, and better readability.
 - **Day 9:** Added dynamic graph visualization and recommendation logic to clearly highlight the fastest and slowest search techniques for each input scenario.
 - **Day 10:** Added subset-checking graph comparison visuals for List, Set, and Sorting methods, including performance recommendations and detailed result cards.
+- **Day 11:** Polished the UI with improved glassmorphism styling, refined form controls, and better responsive layout for the comparator dashboard.
 
 ## 🔮 Future Work
 
