@@ -501,6 +501,283 @@ button:disabled {
     color: var(--text-secondary);
 }
 
+/* Collapsible Generator Configuration Drawers */
+.generator-config-drawer {
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+    padding: 1.25rem;
+    border-radius: 16px;
+    background: rgba(15, 23, 42, 0.4);
+    border: 1px dashed rgba(255, 255, 255, 0.12);
+    animation: slideIn 0.25s ease-out;
+}
+
+.config-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 1rem;
+    margin-top: 0.5rem;
+}
+
+.config-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+/* Live Simulation Card styling */
+.simulation-card {
+    background: rgba(15, 23, 42, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.simulation-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    margin-top: 1rem;
+    margin-bottom: 1.2rem;
+    background: rgba(255, 255, 255, 0.02);
+    padding: 1rem;
+    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.sim-selectors {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.select-sm {
+    padding: 0.6rem 0.8rem;
+    font-size: 0.85rem;
+}
+
+.sim-speed-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+.sim-speed-wrapper input[type="range"] {
+    flex: 1;
+    cursor: pointer;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    outline: none;
+    accent-color: var(--accent-purple);
+}
+
+.btn-group-row {
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+    margin-top: 0.3rem;
+}
+
+.btn-sim {
+    flex: 1;
+    min-width: 60px;
+    font-size: 0.75rem !important;
+    padding: 0.5rem 0.75rem !important;
+    border-radius: 8px !important;
+}
+
+.simulation-screen {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+}
+
+.sim-panel {
+    background: rgba(7, 10, 20, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    border-radius: 16px;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    min-height: 270px;
+}
+
+.sim-panel-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    padding-bottom: 0.4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.sim-stats {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+    background: rgba(255, 255, 255, 0.02);
+    padding: 0.3rem 0.5rem;
+    border-radius: 6px;
+}
+
+.sim-visualization {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0.35rem;
+    align-content: start;
+    flex-grow: 1;
+    min-height: 120px;
+}
+
+.subset-viz-container {
+    display: flex !important;
+    flex-direction: column;
+    gap: 0.6rem;
+    min-height: 120px;
+}
+
+.sim-msg {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    text-align: center;
+    padding: 0.35rem;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    font-family: 'Fira Code', monospace;
+    min-height: 28px;
+}
+
+/* Visualization Block items */
+.sim-block {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 8px;
+    aspect-ratio: 1.1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.sim-block-idx {
+    font-size: 0.55rem;
+    color: rgba(248, 250, 252, 0.4);
+    position: absolute;
+    bottom: 2px;
+    right: 4px;
+}
+
+/* Visual States */
+.sim-block.active {
+    background: rgba(59, 130, 246, 0.15);
+    border-color: var(--accent-blue);
+    color: var(--text-primary);
+    box-shadow: 0 0 10px rgba(59, 130, 246, 0.2);
+}
+
+.sim-block.comparing {
+    background: rgba(249, 115, 22, 0.15);
+    border-color: var(--accent-orange);
+    color: var(--text-primary);
+    box-shadow: 0 0 10px rgba(249, 115, 22, 0.2);
+}
+
+.sim-block.checked {
+    opacity: 0.35;
+    background: rgba(255, 255, 255, 0.005);
+    border-color: rgba(255, 255, 255, 0.02);
+}
+
+.sim-block.found {
+    background: rgba(16, 185, 129, 0.25);
+    border-color: var(--accent-green);
+    color: #34d399;
+    box-shadow: 0 0 15px rgba(16, 185, 129, 0.35);
+    animation: bounce 0.4s ease infinite alternate;
+}
+
+/* Subset-specific Elements */
+.sim-list-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.sim-list-title {
+    font-size: 0.72rem;
+    color: var(--text-secondary);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+}
+
+.sim-list-elements {
+    display: flex;
+    gap: 0.3rem;
+    flex-wrap: wrap;
+}
+
+.sim-item {
+    padding: 0.2rem 0.5rem;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.sim-item.active {
+    background: rgba(168, 85, 247, 0.15);
+    border-color: var(--accent-purple);
+    color: #c084fc;
+    box-shadow: 0 0 8px rgba(168, 85, 247, 0.2);
+}
+
+.sim-item.comparing {
+    background: rgba(249, 115, 22, 0.15);
+    border-color: var(--accent-orange);
+    color: #fb923c;
+    box-shadow: 0 0 8px rgba(249, 115, 22, 0.2);
+}
+
+.sim-item.matched {
+    background: rgba(16, 185, 129, 0.2);
+    border-color: var(--accent-green);
+    color: #34d399;
+}
+
+.sim-item.failed {
+    background: rgba(239, 68, 68, 0.15);
+    border-color: var(--accent-red);
+    color: #f87171;
+}
+
+.sim-item.highlight-set {
+    background: rgba(6, 182, 212, 0.15);
+    border-color: var(--accent-cyan);
+    color: #22d3ee;
+}
+
+@keyframes bounce {
+    from { transform: translateY(0); }
+    to { transform: translateY(-3px); }
+}
+
 /* Error Toast Style */
 #error-toast {
     box-shadow: 0 10px 30px rgba(239, 68, 68, 0.2);
@@ -524,6 +801,13 @@ button:disabled {
     }
 }
 
+@media (max-width: 768px) {
+    .simulation-screen {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+}
+
 @media (max-width: 640px) {
     .compare-selectors {
         grid-template-columns: 1fr;
@@ -531,5 +815,9 @@ button:disabled {
     
     .glass-panel {
         padding: 1.25rem;
+    }
+    
+    .config-grid {
+        grid-template-columns: 1fr;
     }
 }
