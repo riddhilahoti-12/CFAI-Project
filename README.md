@@ -40,7 +40,7 @@ This project provides an interactive frontend interface for students and develop
 ## 👥 Team
 
 Built collaboratively by:
-- **Riddhi**
+- **Riddhi**l
 - **Mounika**
 
 ---

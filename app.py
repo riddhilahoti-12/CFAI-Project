@@ -85,7 +85,6 @@ def compare_subset():
         # Run algorithms
         list_res, list_time = is_subset_list(collection_a, collection_b)
         set_res, set_time = is_subset_set(collection_a, collection_b)
-        sort_res, sort_time = is_subset_sorting(collection_a, collection_b)
         
         return jsonify({
             'status': 'success',
@@ -99,11 +98,6 @@ def compare_subset():
                     'is_subset': set_res,
                     'time_ms': set_time * 1000,
                     'complexity': 'O(N + M)'
-                },
-                'subset_sorting': {
-                    'is_subset': sort_res,
-                    'time_ms': sort_time * 1000,
-                    'complexity': 'O(N log N + M log M)'
                 }
             }
         })
