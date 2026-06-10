@@ -31,8 +31,48 @@
                 <div class="form-group">
                     <div class="label-row">
                         <label for="array-input">Dataset (Comma separated numbers)</label>
-                        <button type="button" id="search-generate-btn" class="btn-secondary">Auto-Generate Large Array</button>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <button type="button" id="search-config-toggle-btn" class="btn-secondary" title="Configure Generator">⚙️ Options</button>
+                            <button type="button" id="search-generate-btn" class="btn-secondary">Generate Dataset</button>
+                        </div>
                     </div>
+                    
+                    <!-- Advanced Search Generator Drawer -->
+                    <div id="search-generator-config" class="generator-config-drawer glass-panel-inner" style="display: none; margin-bottom: 0.8rem;">
+                        <h4 style="font-size: 0.9rem; margin-bottom: 0.75rem; color: var(--accent-blue);">⚙️ Dataset Generation Parameters</h4>
+                        <div class="config-grid">
+                            <div class="config-item">
+                                <label for="search-gen-size" style="font-size: 0.8rem; color: var(--text-secondary);">Array Size</label>
+                                <select id="search-gen-size" class="theme-select" style="padding: 0.5rem; font-size: 0.85rem;">
+                                    <option value="100">100 (Small)</option>
+                                    <option value="1000">1,000 (Medium)</option>
+                                    <option value="5000" selected>5,000 (Large)</option>
+                                    <option value="10000">10,000 (X-Large)</option>
+                                    <option value="20000">20,000 (Huge)</option>
+                                </select>
+                            </div>
+                            <div class="config-item">
+                                <label for="search-gen-pattern" style="font-size: 0.8rem; color: var(--text-secondary);">Distribution Pattern</label>
+                                <select id="search-gen-pattern" class="theme-select" style="padding: 0.5rem; font-size: 0.85rem;">
+                                    <option value="random" selected>Uniform Random</option>
+                                    <option value="sorted">Sorted (Ascending)</option>
+                                    <option value="reverse">Reverse Sorted</option>
+                                    <option value="nearly_sorted">Nearly Sorted</option>
+                                    <option value="duplicates">Few Unique (Duplicates)</option>
+                                </select>
+                            </div>
+                            <div class="config-item">
+                                <label for="search-gen-target" style="font-size: 0.8rem; color: var(--text-secondary);">Target Placement</label>
+                                <select id="search-gen-target" class="theme-select" style="padding: 0.5rem; font-size: 0.85rem;">
+                                    <option value="random" selected>Random Location</option>
+                                    <option value="start">Start (Best Case Linear)</option>
+                                    <option value="end">End (Worst Case Linear)</option>
+                                    <option value="absent">Absent (Not in Array)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
                     <textarea id="array-input" rows="4" placeholder="e.g. 10, 20, 30, 40, 50" required></textarea>
                 </div>
                 
@@ -52,40 +92,79 @@
                     <!-- Populated by JS -->
                 </div>
                 
-                <!-- Live Dropdown Comparative Filter Section -->
-                <div class="comparison-card glass-panel-inner">
+
+                <!-- Live Search Simulation Visualizer Card -->
+                <div class="simulation-card glass-panel-inner">
                     <h3 class="comparison-title">
-                        <span class="pulse-dot"></span> Dynamic Technique Comparison
+                        <span class="pulse-dot" style="background: var(--accent-cyan); box-shadow: 0 0 8px var(--accent-cyan);"></span> Simultaneous Search Simulation
                     </h3>
-                    <p class="text-secondary text-sm">Select two search techniques to view real-time comparative speedup factors and analysis.</p>
+                    <p class="text-secondary text-sm">Visualize step-by-step execution comparison side-by-side. Uses a small-scale sample dataset (15 items).</p>
                     
-                    <div class="compare-selectors">
-                        <div class="select-wrapper">
-                            <label for="algo-a-select">First Algorithm</label>
-                            <select id="algo-a-select" class="theme-select">
-                                <option value="linear_search" selected>Linear Search</option>
-                                <option value="binary_search">Binary Search</option>
-                                <option value="hash_search">Hash Search</option>
-                                <option value="bst_search">BST Search</option>
-                                <option value="avl_search">AVL Search</option>
-                                <option value="bfs_search">BFS Search</option>
-                            </select>
+                    <div class="simulation-controls">
+                        <div class="sim-selectors">
+                            <div class="select-wrapper">
+                                <label for="sim-search-left-select">Left Algorithm</label>
+                                <select id="sim-search-left-select" class="theme-select select-sm">
+                                    <option value="linear_search" selected>Linear Search</option>
+                                    <option value="binary_search">Binary Search</option>
+                                    <option value="hash_search">Hash Search</option>
+                                    <option value="bst_search">BST Search</option>
+                                    <option value="avl_search">AVL Search</option>
+                                    <option value="bfs_search">BFS Search</option>
+                                </select>
+                            </div>
+                            <div class="select-wrapper">
+                                <label for="sim-search-right-select">Right Algorithm</label>
+                                <select id="sim-search-right-select" class="theme-select select-sm">
+                                    <option value="linear_search">Linear Search</option>
+                                    <option value="binary_search" selected>Binary Search</option>
+                                    <option value="hash_search">Hash Search</option>
+                                    <option value="bst_search">BST Search</option>
+                                    <option value="avl_search">AVL Search</option>
+                                    <option value="bfs_search">BFS Search</option>
+                                </select>
+                            </div>
                         </div>
-                        <div class="select-wrapper">
-                            <label for="algo-b-select">Second Algorithm</label>
-                            <select id="algo-b-select" class="theme-select">
-                                <option value="linear_search">Linear Search</option>
-                                <option value="binary_search" selected>Binary Search</option>
-                                <option value="hash_search">Hash Search</option>
-                                <option value="bst_search">BST Search</option>
-                                <option value="avl_search">AVL Search</option>
-                                <option value="bfs_search">BFS Search</option>
-                            </select>
+                        
+                        <div class="sim-speed-wrapper">
+                            <label for="sim-search-speed">Speed: <span id="sim-search-speed-val">500</span>ms</label>
+                            <input type="range" id="sim-search-speed" min="100" max="2000" step="100" value="500">
+                        </div>
+                        
+                        <div class="btn-group-row">
+                            <button type="button" id="sim-search-play-btn" class="btn-secondary btn-sim">▶ Play</button>
+                            <button type="button" id="sim-search-pause-btn" class="btn-secondary btn-sim" disabled>⏸ Pause</button>
+                            <button type="button" id="sim-search-step-btn" class="btn-secondary btn-sim">➡️ Step</button>
+                            <button type="button" id="sim-search-reset-btn" class="btn-secondary btn-sim">🔄 Reset</button>
                         </div>
                     </div>
-                    
-                    <div id="comparison-analysis-details" class="comparison-details-box">
-                        <!-- Populated dynamically by JS -->
+
+                    <div class="simulation-screen">
+                        <!-- Left Panel -->
+                        <div class="sim-panel">
+                            <h4 class="sim-panel-title" id="sim-search-left-title">Linear Search</h4>
+                            <div class="sim-stats">
+                                <span>Steps: <strong id="sim-search-left-steps">0</strong></span>
+                                <span>Comparisons: <strong id="sim-search-left-comps">0</strong></span>
+                            </div>
+                            <div class="sim-visualization" id="sim-search-left-viz">
+                                <!-- Array blocks will render here -->
+                            </div>
+                            <div class="sim-msg" id="sim-search-left-msg">Ready</div>
+                        </div>
+
+                        <!-- Right Panel -->
+                        <div class="sim-panel">
+                            <h4 class="sim-panel-title" id="sim-search-right-title">Binary Search</h4>
+                            <div class="sim-stats">
+                                <span>Steps: <strong id="sim-search-right-steps">0</strong></span>
+                                <span>Comparisons: <strong id="sim-search-right-comps">0</strong></span>
+                            </div>
+                            <div class="sim-visualization" id="sim-search-right-viz">
+                                <!-- Array blocks will render here -->
+                            </div>
+                            <div class="sim-msg" id="sim-search-right-msg">Ready</div>
+                        </div>
                     </div>
                 </div>
 
@@ -100,21 +179,52 @@
         <section class="glass-panel" id="subset-section">
             <div class="section-header">
                 <h2>Subset Checking Comparator</h2>
-                <span class="badge badge-purple">List vs Set</span>
+                <span class="badge badge-purple">List vs Sorting vs Set</span>
             </div>
-            <p class="text-secondary">Compare O(N * M) vs O(N + M) subset algorithms.</p>
+            <p class="text-secondary">Compare O(N * M) vs O(N log N + M log M) vs O(N + M) subset algorithms.</p>
             
             <form id="subset-form">
+                <!-- Advanced Generator options at the very top -->
+                <div class="form-group">
+                    <div class="label-row" style="margin-bottom: 0.3rem;">
+                        <label>Collection Generator Options</label>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <button type="button" id="subset-config-toggle-btn" class="btn-secondary" title="Configure Generator">⚙️ Options</button>
+                            <button type="button" id="subset-generate-btn" class="btn-secondary">Generate Collections</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Advanced Subset Generator Drawer -->
+                    <div id="subset-generator-config" class="generator-config-drawer glass-panel-inner" style="display: none; margin-bottom: 0.8rem;">
+                        <h4 style="font-size: 0.9rem; margin-bottom: 0.75rem; color: var(--accent-purple);">⚙️ Collection Generation Parameters</h4>
+                        <div class="config-grid">
+                            <div class="config-item">
+                                <label for="subset-gen-size-a" style="font-size: 0.8rem; color: var(--text-secondary);">Collection A Size</label>
+                                <input type="number" id="subset-gen-size-a" min="10" max="500" value="100" style="padding: 0.5rem; font-size: 0.85rem; border-radius: 10px;">
+                            </div>
+                            <div class="config-item">
+                                <label for="subset-gen-size-b" style="font-size: 0.8rem; color: var(--text-secondary);">Collection B Size</label>
+                                <input type="number" id="subset-gen-size-b" min="50" max="5000" value="2000" style="padding: 0.5rem; font-size: 0.85rem; border-radius: 10px;">
+                            </div>
+                            <div class="config-item">
+                                <label for="subset-gen-overlap" style="font-size: 0.8rem; color: var(--text-secondary);">Subset Overlap</label>
+                                <select id="subset-gen-overlap" class="theme-select" style="padding: 0.5rem; font-size: 0.85rem;">
+                                    <option value="100" selected>100% Match (Guaranteed Subset)</option>
+                                    <option value="50">50% Overlap (Partial Match)</option>
+                                    <option value="0">0% Overlap (Disjoint)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="form-group">
                     <label for="collection-a-input">Collection A (Comma separated subset)</label>
                     <textarea id="collection-a-input" rows="2" placeholder="e.g. 10, 20" required></textarea>
                 </div>
                 
                 <div class="form-group">
-                    <div class="label-row">
-                        <label for="collection-b-input">Collection B (Comma separated superset)</label>
-                        <button type="button" id="subset-generate-btn" class="btn-secondary">Auto-Generate Large Collections</button>
-                    </div>
+                    <label for="collection-b-input">Collection B (Comma separated superset)</label>
                     <textarea id="collection-b-input" rows="4" placeholder="e.g. 10, 20, 30, 40, 50" required></textarea>
                 </div>
                 
@@ -128,6 +238,75 @@
                 <div class="recommendation-card" id="subset-recommendation">
                     <!-- Populated by JS -->
                 </div>
+                <!-- Live Subset Simulation Visualizer Card -->
+                <div class="simulation-card glass-panel-inner" style="margin-top: 1.5rem;">
+                    <h3 class="comparison-title">
+                        <span class="pulse-dot" style="background: var(--accent-magenta); box-shadow: 0 0 8px var(--accent-magenta);"></span> Simultaneous Subset Simulation
+                    </h3>
+                    <p class="text-secondary text-sm">Visualize step-by-step check execution side-by-side. Uses Collection A (5 items) and Collection B (10 items).</p>
+                    
+                    <div class="simulation-controls">
+                        <div class="sim-selectors">
+                            <div class="select-wrapper">
+                                <label for="sim-subset-left-select">Left Algorithm</label>
+                                <select id="sim-subset-left-select" class="theme-select select-sm">
+                                    <option value="subset_list" selected>List Approach</option>
+                                    <option value="subset_sorting">Sorting Approach</option>
+                                    <option value="subset_set">Set Approach</option>
+                                </select>
+                            </div>
+                            <div class="select-wrapper">
+                                <label for="sim-subset-right-select">Right Algorithm</label>
+                                <select id="sim-subset-right-select" class="theme-select select-sm">
+                                    <option value="subset_list">List Approach</option>
+                                    <option value="subset_sorting">Sorting Approach</option>
+                                    <option value="subset_set" selected>Set Approach</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="sim-speed-wrapper">
+                            <label for="sim-subset-speed">Speed: <span id="sim-subset-speed-val">500</span>ms</label>
+                            <input type="range" id="sim-subset-speed" min="100" max="2000" step="100" value="500">
+                        </div>
+                        
+                        <div class="btn-group-row">
+                            <button type="button" id="sim-subset-play-btn" class="btn-secondary btn-sim">▶ Play</button>
+                            <button type="button" id="sim-subset-pause-btn" class="btn-secondary btn-sim" disabled>⏸ Pause</button>
+                            <button type="button" id="sim-subset-step-btn" class="btn-secondary btn-sim">➡️ Step</button>
+                            <button type="button" id="sim-subset-reset-btn" class="btn-secondary btn-sim">🔄 Reset</button>
+                        </div>
+                    </div>
+
+                    <div class="simulation-screen">
+                        <!-- Left Panel -->
+                        <div class="sim-panel">
+                            <h4 class="sim-panel-title" id="sim-subset-left-title">List Approach</h4>
+                            <div class="sim-stats">
+                                <span>Steps: <strong id="sim-subset-left-steps">0</strong></span>
+                                <span>Lookups: <strong id="sim-subset-left-comps">0</strong></span>
+                            </div>
+                            <div class="sim-visualization subset-viz-container" id="sim-subset-left-viz">
+                                <!-- Elements will render here -->
+                            </div>
+                            <div class="sim-msg" id="sim-subset-left-msg">Ready</div>
+                        </div>
+
+                        <!-- Right Panel -->
+                        <div class="sim-panel">
+                            <h4 class="sim-panel-title" id="sim-subset-right-title">Set Approach</h4>
+                            <div class="sim-stats">
+                                <span>Steps: <strong id="sim-subset-right-steps">0</strong></span>
+                                <span>Lookups: <strong id="sim-subset-right-comps">0</strong></span>
+                            </div>
+                            <div class="sim-visualization subset-viz-container" id="sim-subset-right-viz">
+                                <!-- Elements will render here -->
+                            </div>
+                            <div class="sim-msg" id="sim-subset-right-msg">Ready</div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="search-results-grid" id="subset-grid">
                     <!-- Populated by JS -->
                 </div>
