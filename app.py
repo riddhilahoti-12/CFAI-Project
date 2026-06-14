@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, jsonify
-from algorithms import linear_search, binary_search, hash_search, bst_search, build_bst, is_subset_list, is_subset_set, is_subset_sorting, validate_number_list, bfs_search, build_avl, avl_search
+from algorithms import linear_search, binary_search, hash_search, bst_search, build_bst, is_subset_list, is_subset_set, is_subset_bitmask, validate_number_list, build_btree, btree_search, build_avl, avl_search
 
 app = Flask(__name__)
 
@@ -27,13 +27,16 @@ def compare_search():
         # Build AVL
         avl_root = build_avl(arr)
         
+        # Build B-Tree
+        btree_root = build_btree(arr)
+        
         # Run algorithms
         linear_res, linear_time = linear_search(arr, target)
         binary_res, binary_time = binary_search(arr, target)
         hash_res, hash_time = hash_search(hash_table, target)
         bst_res, bst_time = bst_search(bst_root, target)
         avl_res, avl_time = avl_search(avl_root, target)
-        bfs_res, bfs_time = bfs_search(bst_root, target)
+        btree_res, btree_time = btree_search(btree_root, target)
         
         return jsonify({
             'status': 'success',
@@ -63,10 +66,10 @@ def compare_search():
                     'time_ms': avl_time * 1000,
                     'complexity': 'O(log N)'
                 },
-                'bfs_search': {
-                    'index': bfs_res,
-                    'time_ms': bfs_time * 1000,
-                    'complexity': 'O(N)'
+                'btree_search': {
+                    'index': btree_res,
+                    'time_ms': btree_time * 1000,
+                    'complexity': 'O(log N)'
                 }
             }
         })
@@ -85,7 +88,7 @@ def compare_subset():
         # Run algorithms
         list_res, list_time = is_subset_list(collection_a, collection_b)
         set_res, set_time = is_subset_set(collection_a, collection_b)
-        sorting_res, sorting_time = is_subset_sorting(collection_a, collection_b)
+        bitmask_res, bitmask_time = is_subset_bitmask(collection_a, collection_b)
         
         return jsonify({
             'status': 'success',
@@ -95,10 +98,10 @@ def compare_subset():
                     'time_ms': list_time * 1000,
                     'complexity': 'O(N * M)'
                 },
-                'subset_sorting': {
-                    'is_subset': sorting_res,
-                    'time_ms': sorting_time * 1000,
-                    'complexity': 'O(N log N + M log M)'
+                'subset_bitmask': {
+                    'is_subset': bitmask_res,
+                    'time_ms': bitmask_time * 1000,
+                    'complexity': 'O(N + M)'
                 },
                 'subset_set': {
                     'is_subset': set_res,
