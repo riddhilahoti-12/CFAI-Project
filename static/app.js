@@ -32,15 +32,15 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Search Comparator Event Handler ---
     searchForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        
+
         const arrayInput = document.getElementById('array-input').value.trim();
         const targetInput = document.getElementById('target-input').value.trim();
-        
+
         if (!arrayInput || !targetInput) {
             showError('Please fill in both the dataset and the target number.');
             return;
         }
-        
+
         const submitBtn = searchForm.querySelector('button[type="submit"]');
         const originalText = submitBtn.innerText;
         submitBtn.innerText = 'Calculating...';
@@ -54,11 +54,11 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             const data = await response.json();
-            
+
             if (data.status === 'success') {
                 currentSearchResults = data.results;
                 displaySearchResults(data.results);
-                
+
                 // Initialize/Sync visual simulation state with this input
                 const parsedArray = parseNumbers(arrayInput).sort((a, b) => a - b);
                 const targetVal = parseInt(targetInput);
@@ -77,10 +77,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Subset Comparator Event Handler ---
     subsetForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        
+
         const colAInput = document.getElementById('collection-a-input').value.trim();
         const colBInput = document.getElementById('collection-b-input').value.trim();
-        
+
         if (!colAInput || !colBInput) {
             showError('Please fill in both collections.');
             return;
@@ -99,11 +99,11 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             const data = await response.json();
-            
+
             if (data.status === 'success') {
                 currentSubsetResults = data.results;
                 displaySubsetResults(data.results);
-                
+
                 // Setup visual simulation with subset input
                 const arrA = parseNumbers(colAInput);
                 const arrB = parseNumbers(colBInput);
@@ -129,7 +129,7 @@ document.addEventListener('DOMContentLoaded', () => {
             .replace('_search', '')
             .replace('bst', 'BST')
             .replace('avl', 'AVL')
-            .replace('bfs', 'BFS')
+            .replace('btree', 'B-Tree')
             .replace('hash', 'Hash')
             .replace('linear', 'Linear')
             .replace('binary', 'Binary');
@@ -140,11 +140,11 @@ document.addEventListener('DOMContentLoaded', () => {
             .replace('subset_', '')
             .replace('list', 'List')
             .replace('set', 'Set')
-            .replace('sorting', 'Sorting');
+            .replace('bitmask', 'Bitmask');
     }
 
     function analyzeSearchPerformance(results) {
-        const keys = ['linear_search', 'binary_search', 'hash_search', 'bst_search', 'avl_search', 'bfs_search'];
+        const keys = ['linear_search', 'binary_search', 'hash_search', 'bst_search', 'avl_search', 'btree_search'];
         const performance = keys.map((key) => ({
             key,
             name: formatAlgorithmLabel(key),
@@ -170,7 +170,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function analyzeSubsetPerformance(results) {
-        const keys = ['subset_list', 'subset_sorting', 'subset_set'];
+        const keys = ['subset_list', 'subset_bitmask', 'subset_set'];
         const performance = keys.map((key) => ({
             key,
             name: formatSubsetLabel(key),
@@ -197,14 +197,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const ctx = document.getElementById('search-chart').getContext('2d');
         const labels = analysis.keys.map(formatAlgorithmLabel);
         const values = analysis.keys.map((key) => results[key].time_ms);
-        
+
         const backgroundColors = [
             'rgba(236, 72, 153, 0.85)', // Linear - Magenta
             'rgba(59, 130, 246, 0.85)',  // Binary - Blue
             'rgba(16, 185, 129, 0.85)',  // Hash - Cyber Green
             'rgba(168, 85, 247, 0.85)',  // BST - Purple
             'rgba(6, 182, 212, 0.85)',   // AVL - Cyan
-            'rgba(249, 115, 22, 0.85)'   // BFS - Orange
+            'rgba(249, 115, 22, 0.85)'   // B-Tree - Orange
         ];
 
         if (searchChart) {
@@ -263,10 +263,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const ctx = document.getElementById('subset-chart').getContext('2d');
         const labels = analysis.keys.map(formatSubsetLabel);
         const values = analysis.keys.map((key) => results[key].time_ms);
-        
+
         const backgroundColors = [
             'rgba(239, 68, 68, 0.85)',   // List - Cyber Red
-            'rgba(168, 85, 247, 0.85)',  // Sorting - Purple
+            'rgba(168, 85, 247, 0.85)',  // Bitmask - Purple
             'rgba(16, 185, 129, 0.85)'   // Set - Cyber Green
         ];
 
@@ -339,7 +339,7 @@ document.addEventListener('DOMContentLoaded', () => {
             </h3>
             <p style="font-size: 1.05rem; margin-bottom: 0.3rem;">Best choice: <strong style="color: var(--accent-green);">${analysis.best.name}</strong> — completed search in <strong style="color: var(--accent-green);">${analysis.best.time_ms.toFixed(4)} ms</strong>.</p>
             <p style="font-size: 1.05rem; margin-bottom: 0.3rem;">Avoid in production: <strong style="color: var(--accent-red);">${analysis.worst.name}</strong> — worst timing at <strong style="color: var(--accent-red);">${analysis.worst.time_ms.toFixed(4)} ms</strong>.</p>
-            <p class="text-secondary text-sm">Note: BST & AVL require initial tree building overhead. This comparator measures direct retrieval speed.</p>
+            <p class="text-secondary text-sm">Note: BST, AVL & B-Tree require initial tree building overhead. This comparator measures direct retrieval speed.</p>
         `;
 
         const gridContainer = document.getElementById('search-grid');
@@ -375,10 +375,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 <p class="card-detail">Found index: ${results.avl_search.index}</p>
             </div>
             <div class="result-card" style="border-left: 4px solid var(--accent-orange);">
-                <h3>BFS Search</h3>
-                <p class="time-val" style="color: var(--accent-orange);">${results.bfs_search.time_ms.toFixed(4)} ms</p>
-                <p class="card-detail">Complexity: ${results.bfs_search.complexity}</p>
-                <p class="card-detail">Found index: ${results.bfs_search.index}</p>
+                <h3>B-Tree Search</h3>
+                <p class="time-val" style="color: var(--accent-orange);">${results.btree_search.time_ms.toFixed(4)} ms</p>
+                <p class="card-detail">Complexity: ${results.btree_search.complexity}</p>
+                <p class="card-detail">Found index: ${results.btree_search.index}</p>
             </div>
         `;
 
@@ -411,10 +411,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 <p class="card-detail">Is Subset: ${results.subset_list.is_subset}</p>
             </div>
             <div class="result-card" style="border-left: 4px solid var(--accent-purple);">
-                <h3>Sorting Approach</h3>
-                <p class="time-val" style="color: var(--accent-purple);">${results.subset_sorting.time_ms.toFixed(4)} ms</p>
-                <p class="card-detail">Complexity: ${results.subset_sorting.complexity}</p>
-                <p class="card-detail">Is Subset: ${results.subset_sorting.is_subset}</p>
+                <h3>Bitmask Approach</h3>
+                <p class="time-val" style="color: var(--accent-purple);">${results.subset_bitmask.time_ms.toFixed(4)} ms</p>
+                <p class="card-detail">Complexity: ${results.subset_bitmask.complexity}</p>
+                <p class="card-detail">Is Subset: ${results.subset_bitmask.is_subset}</p>
             </div>
             <div class="result-card" style="border-left: 4px solid var(--accent-green);">
                 <h3>Set Approach</h3>
@@ -445,10 +445,10 @@ document.addEventListener('DOMContentLoaded', () => {
         // Generate base array
         let arr = [];
         if (pattern === 'duplicates') {
-            const uniquePool = Array.from({length: Math.max(5, Math.floor(size / 20))}, () => Math.floor(Math.random() * 50000));
-            arr = Array.from({length: size}, () => uniquePool[Math.floor(Math.random() * uniquePool.length)]);
+            const uniquePool = Array.from({ length: Math.max(5, Math.floor(size / 20)) }, () => Math.floor(Math.random() * 50000));
+            arr = Array.from({ length: size }, () => uniquePool[Math.floor(Math.random() * uniquePool.length)]);
         } else {
-            arr = Array.from({length: size}, () => Math.floor(Math.random() * 100000));
+            arr = Array.from({ length: size }, () => Math.floor(Math.random() * 100000));
         }
 
         // Apply ordering patterns
@@ -483,7 +483,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         document.getElementById('array-input').value = arr.join(', ');
         document.getElementById('target-input').value = target;
-        
+
         setupSearchSimulationData(arr, target);
     });
 
@@ -492,18 +492,18 @@ document.addEventListener('DOMContentLoaded', () => {
         const sizeB = parseInt(document.getElementById('subset-gen-size-b').value);
         const overlap = parseInt(document.getElementById('subset-gen-overlap').value);
 
-        const superset = Array.from({length: sizeB}, () => Math.floor(Math.random() * 80000));
+        const superset = Array.from({ length: sizeB }, () => Math.floor(Math.random() * 80000));
         let subset = [];
 
         if (overlap === 100) {
-            subset = Array.from({length: sizeA}, () => superset[Math.floor(Math.random() * superset.length)]);
+            subset = Array.from({ length: sizeA }, () => superset[Math.floor(Math.random() * superset.length)]);
         } else if (overlap === 50) {
             const countFromB = Math.floor(sizeA / 2);
-            const fromB = Array.from({length: countFromB}, () => superset[Math.floor(Math.random() * superset.length)]);
-            const extra = Array.from({length: sizeA - countFromB}, () => Math.floor(Math.random() * 80000) + 90000);
+            const fromB = Array.from({ length: countFromB }, () => superset[Math.floor(Math.random() * superset.length)]);
+            const extra = Array.from({ length: sizeA - countFromB }, () => Math.floor(Math.random() * 80000) + 90000);
             subset = [...fromB, ...extra];
         } else {
-            subset = Array.from({length: sizeA}, () => Math.floor(Math.random() * 80000) + 90000);
+            subset = Array.from({ length: sizeA }, () => Math.floor(Math.random() * 80000) + 90000);
         }
 
         document.getElementById('collection-b-input').value = superset.join(', ');
@@ -533,9 +533,9 @@ document.addEventListener('DOMContentLoaded', () => {
         let sample = [];
         const pattern = document.getElementById('search-gen-pattern') ? document.getElementById('search-gen-pattern').value : 'random';
         const placement = document.getElementById('search-gen-target') ? document.getElementById('search-gen-target').value : 'random';
-        
+
         const baseVals = [12, 24, 35, 42, 57, 68, 71, 80, 89, 95, 102, 114, 128, 137, 149];
-        
+
         if (placement === 'absent') {
             sample = [...baseVals];
             searchSimState.target = 88;
@@ -563,7 +563,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function resetSearchSimulation() {
         stopSearchSimulationTimer();
-        
+
         searchSimState.isPlaying = false;
         document.getElementById('sim-search-play-btn').innerText = '▶ Play';
         document.getElementById('sim-search-play-btn').disabled = false;
@@ -597,12 +597,16 @@ document.addEventListener('DOMContentLoaded', () => {
             right: length - 1,
             mid: -1,
             currNode: Math.floor((length - 1) / 2),
-            bfsQueue: [Math.floor((length - 1) / 2)],
-            bfsTree: {
-                7: [3, 11], 
-                3: [1, 5], 11: [9, 13], 
-                1: [0, 2], 5: [4, 6], 9: [8, 10], 13: [12, 14]
-            }
+            btreeNodes: {
+                'root': { keys: [7], children: ['B', 'C'], leaf: false },
+                'B': { keys: [3], children: ['D', 'E'], leaf: false },
+                'C': { keys: [11], children: ['F', 'G'], leaf: false },
+                'D': { keys: [0, 1, 2], children: [], leaf: true },
+                'E': { keys: [4, 5, 6], children: [], leaf: true },
+                'F': { keys: [8, 9, 10], children: [], leaf: true },
+                'G': { keys: [12, 13, 14], children: [], leaf: true }
+            },
+            currNodeId: 'root'
         };
 
         if (algo === 'binary_search') {
@@ -614,8 +618,8 @@ document.addEventListener('DOMContentLoaded', () => {
             state.msg = `Checking direct slot`;
         } else if (algo === 'bst_search' || algo === 'avl_search') {
             state.msg = `Start at tree root: index ${state.currNode}`;
-        } else if (algo === 'bfs_search') {
-            state.msg = `Start BFS queue: [${state.bfsQueue.join(', ')}]`;
+        } else if (algo === 'btree_search') {
+            state.msg = `Start at B-Tree root node: keys [${state.btreeNodes['root'].keys.map(k => dataset[k]).join(', ')}]`;
         }
 
         return state;
@@ -647,7 +651,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 block.classList.add('checked');
             } else if (engine.algo === 'binary_search' && idx >= engine.left && idx <= engine.right && engine.status === 'searching') {
                 block.classList.add('active');
-            } else if ((engine.algo === 'bst_search' || engine.algo === 'avl_search' || engine.algo === 'bfs_search') && idx === engine.currNode && engine.status === 'searching') {
+            } else if ((engine.algo === 'bst_search' || engine.algo === 'avl_search') && idx === engine.currNode && engine.status === 'searching') {
+                block.classList.add('active');
+            } else if (engine.algo === 'btree_search' && engine.status === 'searching' && engine.btreeNodes[engine.currNodeId].keys.includes(idx)) {
                 block.classList.add('active');
             }
 
@@ -661,7 +667,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (algo === 'hash_search') return 'O(1)';
         if (algo === 'bst_search') return 'O(h)';
         if (algo === 'avl_search') return 'O(log N)';
-        if (algo === 'bfs_search') return 'O(N)';
+        if (algo === 'btree_search') return 'O(log N)';
         return '';
     }
 
@@ -674,7 +680,7 @@ document.addEventListener('DOMContentLoaded', () => {
             engine.comps++;
             engine.comparingIndex = engine.idx;
             const currentVal = engine.dataset[engine.idx];
-            
+
             if (currentVal === engine.target) {
                 engine.status = 'found';
                 engine.foundIndex = engine.idx;
@@ -689,8 +695,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     engine.msg = `Scan index ${engine.idx}: ${engine.dataset[engine.idx]} vs ${engine.target}`;
                 }
             }
-        } 
-        
+        }
+
         else if (engine.algo === 'binary_search') {
             engine.comps++;
             engine.comparingIndex = engine.mid;
@@ -721,8 +727,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     engine.msg = `Target ${engine.target} < Pivot ${midVal}. Look left [index ${engine.left}..${engine.right}]. Mid is ${engine.mid}.`;
                 }
             }
-        } 
-        
+        }
+
         else if (engine.algo === 'hash_search') {
             engine.comps++;
             const idx = engine.dataset.indexOf(engine.target);
@@ -735,8 +741,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 engine.status = 'absent';
                 engine.msg = `❌ Target ${engine.target} absent in O(1) direct lookup map.`;
             }
-        } 
-        
+        }
+
         else if (engine.algo === 'bst_search' || engine.algo === 'avl_search') {
             engine.comps++;
             engine.comparingIndex = engine.currNode;
@@ -767,36 +773,48 @@ document.addEventListener('DOMContentLoaded', () => {
                     engine.msg = `Target ${engine.target} > Node ${nodeVal}. Traversed Right branch to node ${engine.currNode}.`;
                 }
             }
-        } 
-        
-        else if (engine.algo === 'bfs_search') {
-            if (engine.bfsQueue.length === 0) {
-                engine.status = 'absent';
-                engine.msg = `❌ Level order scan complete. Target ${engine.target} not found.`;
-                return;
+        }
+
+        else if (engine.algo === 'btree_search') {
+            const node = engine.btreeNodes[engine.currNodeId];
+            engine.comps++;
+
+            let foundIdxInNode = -1;
+            for (let j = 0; j < node.keys.length; j++) {
+                const keyIdx = node.keys[j];
+                const keyVal = engine.dataset[keyIdx];
+                if (keyVal === engine.target) {
+                    foundIdxInNode = keyIdx;
+                    break;
+                }
             }
 
-            engine.comps++;
-            const nodeIdx = engine.bfsQueue.shift();
-            engine.comparingIndex = nodeIdx;
-            engine.currNode = nodeIdx;
-            const nodeVal = engine.dataset[nodeIdx];
-
-            if (nodeVal === engine.target) {
+            if (foundIdxInNode !== -1) {
                 engine.status = 'found';
-                engine.foundIndex = nodeIdx;
-                engine.msg = `🎯 BFS found target ${engine.target} at Level-Order node index ${nodeIdx}!`;
+                engine.foundIndex = foundIdxInNode;
+                engine.msg = `🎯 Found target ${engine.target} in B-Tree node ${engine.currNodeId} at index ${foundIdxInNode}!`;
             } else {
-                engine.visited.add(nodeIdx);
-                const children = engine.bfsTree[nodeIdx] || [];
-                children.forEach(child => {
-                    if (child >= 0 && child < engine.dataset.length) {
-                        engine.bfsQueue.push(child);
-                    }
-                });
-                engine.msg = `BFS visited ${nodeVal}. Next Queue: [${engine.bfsQueue.map(i => engine.dataset[i]).join(', ')}]`;
-                if (engine.bfsQueue.length === 0) {
+                if (node.leaf) {
                     engine.status = 'absent';
+                    engine.msg = `❌ Reached leaf node ${engine.currNodeId}. Target ${engine.target} not found.`;
+                } else {
+                    let childIndex = 0;
+                    while (childIndex < node.keys.length) {
+                        const keyIdx = node.keys[childIndex];
+                        const keyVal = engine.dataset[keyIdx];
+                        if (engine.target < keyVal) {
+                            break;
+                        }
+                        childIndex++;
+                    }
+
+                    node.keys.forEach(k => engine.visited.add(k));
+
+                    const nextNodeId = node.children[childIndex];
+                    engine.currNodeId = nextNodeId;
+                    const nextNode = engine.btreeNodes[nextNodeId];
+                    const nextNodeVals = nextNode.keys.map(k => engine.dataset[k]);
+                    engine.msg = `Target ${engine.target} not in keys. Descended to child node ${nextNodeId}: keys [${nextNodeVals.join(', ')}]`;
                 }
             }
         }
@@ -888,7 +906,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function setupSubsetSimulationData(arrA, arrB) {
         const overlap = document.getElementById('subset-gen-overlap') ? document.getElementById('subset-gen-overlap').value : '100';
-        
+
         let sampleB = [12, 19, 27, 34, 45, 52, 60, 78, 83, 91];
         let sampleA = [];
 
@@ -942,17 +960,18 @@ document.addEventListener('DOMContentLoaded', () => {
             buildIdx: 0,
             checkIdx: 0,
             setStorage: new Set(),
-            sortPhase: 'sorting_a',
-            sortedA: [],
-            sortedB: []
+            bitmaskPhase: 'mapping',
+            mapping: {},
+            maskA: 0,
+            maskB: 0
         };
 
         if (algo === 'subset_list') {
             state.msg = `Starting outer list loop. Pointer i = 0`;
         } else if (algo === 'subset_set') {
             state.msg = `Phase 1: Populate Set with Collection B values.`;
-        } else if (algo === 'subset_sorting') {
-            state.msg = `Phase 1: Sort Collection A.`;
+        } else if (algo === 'subset_bitmask') {
+            state.msg = `Phase 1: Map Collection B elements to bit positions.`;
         }
 
         return state;
@@ -974,17 +993,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const rowA = document.createElement('div');
         rowA.className = 'sim-list-row';
-        
+
         let labelTextA = 'Collection A (Subset)';
-        if (engine.algo === 'subset_sorting' && engine.sortPhase !== 'sorting_a') {
-            labelTextA = 'Collection A (Sorted)';
-        }
         rowA.innerHTML = `<span class="sim-list-title">${labelTextA}</span>`;
-        
+
         const elemsA = document.createElement('div');
         elemsA.className = 'sim-list-elements';
-        
-        const arrayToDrawA = (engine.algo === 'subset_sorting' && engine.sortPhase !== 'sorting_a') ? engine.sortedA : engine.collA;
+
+        const arrayToDrawA = engine.collA;
         arrayToDrawA.forEach((val, idx) => {
             const item = document.createElement('span');
             item.className = 'sim-item';
@@ -1003,7 +1019,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     item.classList.add('active');
                 } else if (engine.algo === 'subset_set' && engine.setPhase === 'check' && idx === engine.checkIdx) {
                     item.classList.add('active');
-                } else if (engine.algo === 'subset_sorting' && engine.sortPhase === 'pointers' && idx === engine.idxA) {
+                } else if (engine.algo === 'subset_bitmask' && engine.bitmaskPhase === 'mask_a' && idx === engine.idxA) {
                     item.classList.add('active');
                 }
             }
@@ -1013,17 +1029,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const rowB = document.createElement('div');
         rowB.className = 'sim-list-row';
-        
+
         let labelTextB = 'Collection B (Superset)';
-        if (engine.algo === 'subset_sorting' && engine.sortPhase === 'pointers') {
-            labelTextB = 'Collection B (Sorted)';
-        }
         rowB.innerHTML = `<span class="sim-list-title">${labelTextB}</span>`;
-        
+
         const elemsB = document.createElement('div');
         elemsB.className = 'sim-list-elements';
-        
-        const arrayToDrawB = (engine.algo === 'subset_sorting' && engine.sortPhase === 'pointers') ? engine.sortedB : engine.collB;
+
+        const arrayToDrawB = engine.collB;
         arrayToDrawB.forEach((val, idx) => {
             const item = document.createElement('span');
             item.className = 'sim-item';
@@ -1037,9 +1050,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 } else if (engine.setStorage.has(val)) {
                     item.classList.add('highlight-set');
                 }
-            } else if (engine.algo === 'subset_sorting') {
-                if (engine.sortPhase === 'pointers' && idx === engine.idxB) {
+            } else if (engine.algo === 'subset_bitmask') {
+                if (engine.bitmaskPhase === 'mapping' && idx === engine.idxB) {
                     item.classList.add('comparing');
+                } else if (engine.mapping[val] !== undefined) {
+                    item.classList.add('highlight-set');
                 }
             }
 
@@ -1062,12 +1077,33 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             `;
             vizContainer.appendChild(setBox);
+        } else if (engine.algo === 'subset_bitmask') {
+            const bitmaskBox = document.createElement('div');
+            bitmaskBox.className = 'sim-list-row';
+            bitmaskBox.style.marginTop = '0.4rem';
+            
+            const binA = (engine.maskA >>> 0).toString(2).padStart(engine.collB.length, '0');
+            const binB = (engine.maskB >>> 0).toString(2).padStart(engine.collB.length, '0');
+            
+            const mappingItems = Object.entries(engine.mapping).map(([val, pos]) => 
+                `<span class="sim-item highlight-set" style="font-size: 0.7rem; margin-right: 0.2rem;">${val} → Bit ${pos}</span>`
+            ).join('');
+            
+            bitmaskBox.innerHTML = `
+                <span class="sim-list-title" style="color: var(--accent-cyan);">Simulated Bitwise State:</span>
+                <div style="background: rgba(0,0,0,0.2); padding: 0.5rem; border-radius: 8px; font-family: monospace; font-size: 0.8rem; display: flex; flex-direction: column; gap: 0.3rem;">
+                    <div><strong>Mapping:</strong> ${mappingItems || '<span class="text-secondary" style="font-style: italic;">Empty</span>'}</div>
+                    <div><strong>Mask B:</strong> <span style="color: var(--accent-green);">${binB}</span> (Decimal: ${engine.maskB})</div>
+                    <div><strong>Mask A:</strong> <span style="color: var(--accent-purple);">${binA}</span> (Decimal: ${engine.maskA})</div>
+                </div>
+            `;
+            vizContainer.appendChild(bitmaskBox);
         }
     }
 
     function getSubsetComplexity(algo) {
         if (algo === 'subset_list') return 'O(N * M)';
-        if (algo === 'subset_sorting') return 'O(N log N + M log M)';
+        if (algo === 'subset_bitmask') return 'O(N + M)';
         if (algo === 'subset_set') return 'O(N + M)';
         return '';
     }
@@ -1104,8 +1140,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     engine.msg = `Compare A[${engine.idxA}] = ${valA} vs B[${engine.idxB}] = ${valB}. No match, continue scanning.`;
                 }
             }
-        } 
-        
+        }
+
         else if (engine.algo === 'subset_set') {
             if (engine.setPhase === 'build') {
                 const valB = engine.collB[engine.buildIdx];
@@ -1118,7 +1154,7 @@ document.addEventListener('DOMContentLoaded', () => {
             } else if (engine.setPhase === 'check') {
                 engine.comps++;
                 const valA = engine.collA[engine.checkIdx];
-                
+
                 if (engine.setStorage.has(valA)) {
                     engine.matches[engine.checkIdx] = true;
                     engine.msg = `⚡ Set lookup: ${valA} found instantly!`;
@@ -1133,44 +1169,49 @@ document.addEventListener('DOMContentLoaded', () => {
                     engine.msg = `❌ Set lookup: ${valA} is absent from set. Failed!`;
                 }
             }
-        } 
-        
-        else if (engine.algo === 'subset_sorting') {
-            if (engine.sortPhase === 'sorting_a') {
-                engine.sortedA = [...engine.collA].sort((a, b) => a - b);
-                engine.msg = `Collection A sorted: [${engine.sortedA.join(', ')}]`;
-                engine.sortPhase = 'sorting_b';
-            } else if (engine.sortPhase === 'sorting_b') {
-                engine.sortedB = [...engine.collB].sort((a, b) => a - b);
-                engine.msg = `Collection B sorted: [${engine.sortedB.join(', ')}]`;
-                engine.sortPhase = 'pointers';
-                engine.idxA = 0;
-                engine.idxB = 0;
-            } else if (engine.sortPhase === 'pointers') {
-                engine.comps++;
-                const valA = engine.sortedA[engine.idxA];
-                const valB = engine.sortedB[engine.idxB];
+        }
 
-                if (valA === valB) {
-                    engine.matches[engine.idxA] = true;
-                    engine.msg = `Pointers: ${valA} === ${valB}. Match! Increment both pointers.`;
-                    engine.idxA++;
-                    engine.idxB++;
-                    if (engine.idxA >= engine.sortedA.length) {
-                        engine.status = 'subset';
-                        engine.msg = `🎉 Subset check passes! Traversal pointers matched all items.`;
-                    }
-                } else if (valA > valB) {
-                    engine.msg = `Pointers: ${valA} > ${valB}. Superset item is too small. Shift superset pointer.`;
-                    engine.idxB++;
-                    if (engine.idxB >= engine.sortedB.length) {
-                        engine.status = 'not_subset';
-                        engine.msg = `❌ Superset depleted. Element ${valA} not found. Failed!`;
-                    }
+        else if (engine.algo === 'subset_bitmask') {
+            if (engine.bitmaskPhase === 'mapping') {
+                const valB = engine.collB[engine.idxB];
+                if (engine.mapping[valB] === undefined) {
+                    engine.mapping[valB] = engine.idxB;
+                    engine.maskB |= (1 << engine.idxB);
+                    engine.msg = `Mapped B element ${valB} to bit ${engine.idxB}. Mask B now: ${(engine.maskB).toString(2)}`;
                 } else {
+                    engine.msg = `B element ${valB} already mapped.`;
+                }
+                engine.idxB++;
+                if (engine.idxB >= engine.collB.length) {
+                    engine.bitmaskPhase = 'mask_a';
+                    engine.idxA = 0;
+                }
+            } else if (engine.bitmaskPhase === 'mask_a') {
+                engine.comps++;
+                const valA = engine.collA[engine.idxA];
+                if (engine.mapping[valA] === undefined) {
                     engine.matches[engine.idxA] = false;
                     engine.status = 'not_subset';
-                    engine.msg = `❌ Pointers: A[${engine.idxA}] = ${valA} < B[${engine.idxB}] = ${valB}. Cannot be found. Failed!`;
+                    engine.msg = `❌ Element ${valA} is not present in Collection B. Bitmask subset check failed!`;
+                } else {
+                    engine.matches[engine.idxA] = true;
+                    const bitPos = engine.mapping[valA];
+                    engine.maskA |= (1 << bitPos);
+                    engine.msg = `Added element ${valA} to Mask A at bit ${bitPos}. Mask A now: ${(engine.maskA).toString(2)}`;
+                    engine.idxA++;
+                    if (engine.idxA >= engine.collA.length) {
+                        engine.bitmaskPhase = 'check';
+                    }
+                }
+            } else if (engine.bitmaskPhase === 'check') {
+                engine.comps++;
+                const isSubset = (engine.maskA & engine.maskB) === engine.maskA;
+                if (isSubset) {
+                    engine.status = 'subset';
+                    engine.msg = `🎉 Bitmask match: (Mask A & Mask B) == Mask A passes! All items in A are in B.`;
+                } else {
+                    engine.status = 'not_subset';
+                    engine.msg = `❌ Bitmask mismatch: (Mask A & Mask B) !== Mask A. Subset check failed!`;
                 }
             }
         }
