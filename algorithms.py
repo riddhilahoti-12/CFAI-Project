@@ -114,24 +114,85 @@ def bst_search(root: TreeNode, target: int) -> int:
             curr = curr.right
     return -1
 
+class BTreeNode:
+    def __init__(self, leaf=True):
+        self.leaf = leaf
+        self.keys = []  # list of (val, index)
+        self.children = []  # list of BTreeNode pointers
+
+class BTree:
+    def __init__(self, t=3):
+        self.root = BTreeNode(True)
+        self.t = t
+
+    def insert(self, val, index):
+        root = self.root
+        if len(root.keys) == (2 * self.t) - 1:
+            temp = BTreeNode(False)
+            self.root = temp
+            temp.children.insert(0, root)
+            self.split_child(temp, 0)
+            self.insert_non_full(temp, val, index)
+        else:
+            self.insert_non_full(root, val, index)
+
+    def split_child(self, x, i):
+        t = self.t
+        y = x.children[i]
+        z = BTreeNode(y.leaf)
+        x.children.insert(i + 1, z)
+        x.keys.insert(i, y.keys[t - 1])
+        z.keys = y.keys[t : (2 * t - 1)]
+        y.keys = y.keys[0 : (t - 1)]
+        if not y.leaf:
+            z.children = y.children[t : (2 * t)]
+            y.children = y.children[0 : t]
+
+    def insert_non_full(self, x, val, index):
+        i = len(x.keys) - 1
+        if x.leaf:
+            x.keys.append((None, None))
+            while i >= 0 and val < x.keys[i][0]:
+                x.keys[i + 1] = x.keys[i]
+                i -= 1
+            x.keys[i + 1] = (val, index)
+        else:
+            while i >= 0 and val < x.keys[i][0]:
+                i -= 1
+            i += 1
+            if len(x.children[i].keys) == (2 * self.t) - 1:
+                self.split_child(x, i)
+                if val > x.keys[i][0]:
+                    i += 1
+            self.insert_non_full(x.children[i], val, index)
+
+def btree_search_node(node, target):
+    i = 0
+    while i < len(node.keys) and target > node.keys[i][0]:
+        i += 1
+    if i < len(node.keys) and target == node.keys[i][0]:
+        return node.keys[i][1]
+    if node.leaf:
+        return -1
+    return btree_search_node(node.children[i], target)
+
+def build_btree(arr, t=3):
+    if not arr:
+        return None
+    btree = BTree(t)
+    for i, val in enumerate(arr):
+        btree.insert(val, i)
+    return btree.root
+
 @time_it
-def bfs_search(root: TreeNode, target: int) -> int:
+def btree_search(root: BTreeNode, target: int) -> int:
     """
-    Performs a level-order (Breadth-First) search on a Binary Search Tree.
+    Performs a search on a B-Tree.
     Returns the index if found, else -1.
     """
     if not root:
         return -1
-    queue = [root]
-    while queue:
-        curr = queue.pop(0)
-        if curr.val == target:
-            return curr.index
-        if curr.left:
-            queue.append(curr.left)
-        if curr.right:
-            queue.append(curr.right)
-    return -1
+    return btree_search_node(root, target)
 
 
 # --- AVL Tree Algorithms ---
@@ -251,22 +312,27 @@ def is_subset_set(collection_a, collection_b):
     return set_a.issubset(set_b)
 
 @time_it
-def is_subset_sorting(collection_a, collection_b):
+def is_subset_bitmask(collection_a, collection_b):
     """
-    Checks if collection_a is a subset of collection_b using sorting O(N log N + M log M).
+    Checks if collection_a is a subset of collection_b using bitmask logic.
     """
-    a_sorted = sorted(collection_a)
-    b_sorted = sorted(collection_b)
-    
-    i, j = 0, 0
-    while i < len(a_sorted) and j < len(b_sorted):
-        if a_sorted[i] == b_sorted[j]:
-            i += 1
-            j += 1
-        elif a_sorted[i] > b_sorted[j]:
-            j += 1
-        else:
+    mapping = {}
+    bit_index = 0
+    for x in collection_b:
+        if x not in mapping:
+            mapping[x] = bit_index
+            bit_index += 1
+            
+    mask_b = 0
+    for x in collection_b:
+        mask_b |= (1 << mapping[x])
+        
+    mask_a = 0
+    for x in collection_a:
+        if x not in mapping:
             return False
-    return i == len(a_sorted)
+        mask_a |= (1 << mapping[x])
+        
+    return (mask_a & mask_b) == mask_a
 
 
