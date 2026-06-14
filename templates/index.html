@@ -23,7 +23,7 @@
         <section class="glass-panel" id="search-section">
             <div class="section-header">
                 <h2>Search Algorithms Comparator</h2>
-                <span class="badge badge-blue">Linear vs Binary vs Hash vs BST vs AVL vs BFS</span>
+                <span class="badge badge-blue">Linear vs Binary vs Hash vs BST vs AVL vs B-Tree</span>
             </div>
             <p class="text-secondary">Compare O(N) vs O(log N) vs O(1) vs O(h) time complexities across 6 algorithms.</p>
             
@@ -110,7 +110,7 @@
                                     <option value="hash_search">Hash Search</option>
                                     <option value="bst_search">BST Search</option>
                                     <option value="avl_search">AVL Search</option>
-                                    <option value="bfs_search">BFS Search</option>
+                                    <option value="btree_search">B-Tree Search</option>
                                 </select>
                             </div>
                             <div class="select-wrapper">
@@ -121,10 +121,11 @@
                                     <option value="hash_search">Hash Search</option>
                                     <option value="bst_search">BST Search</option>
                                     <option value="avl_search">AVL Search</option>
-                                    <option value="bfs_search">BFS Search</option>
+                                    <option value="btree_search">B-Tree Search</option>
                                 </select>
                             </div>
                         </div>
+                    </div>
                         
                         <div class="sim-speed-wrapper">
                             <label for="sim-search-speed">Speed: <span id="sim-search-speed-val">500</span>ms</label>
@@ -179,9 +180,9 @@
         <section class="glass-panel" id="subset-section">
             <div class="section-header">
                 <h2>Subset Checking Comparator</h2>
-                <span class="badge badge-purple">List vs Sorting vs Set</span>
+                <span class="badge badge-purple">List vs Bitmask vs Set</span>
             </div>
-            <p class="text-secondary">Compare O(N * M) vs O(N log N + M log M) vs O(N + M) subset algorithms.</p>
+            <p class="text-secondary">Compare O(N * M) vs O(N + M) subset algorithms.</p>
             
             <form id="subset-form">
                 <!-- Advanced Generator options at the very top -->
@@ -251,7 +252,7 @@
                                 <label for="sim-subset-left-select">Left Algorithm</label>
                                 <select id="sim-subset-left-select" class="theme-select select-sm">
                                     <option value="subset_list" selected>List Approach</option>
-                                    <option value="subset_sorting">Sorting Approach</option>
+                                    <option value="subset_bitmask">Bitmask Approach</option>
                                     <option value="subset_set">Set Approach</option>
                                 </select>
                             </div>
@@ -259,11 +260,12 @@
                                 <label for="sim-subset-right-select">Right Algorithm</label>
                                 <select id="sim-subset-right-select" class="theme-select select-sm">
                                     <option value="subset_list">List Approach</option>
-                                    <option value="subset_sorting">Sorting Approach</option>
+                                    <option value="subset_bitmask">Bitmask Approach</option>
                                     <option value="subset_set" selected>Set Approach</option>
                                 </select>
                             </div>
                         </div>
+                    </div>
                         
                         <div class="sim-speed-wrapper">
                             <label for="sim-subset-speed">Speed: <span id="sim-subset-speed-val">500</span>ms</label>
